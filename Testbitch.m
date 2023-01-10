@@ -1,1 +1,0 @@
-%Nu gaat dit echt ff gecheft worden
