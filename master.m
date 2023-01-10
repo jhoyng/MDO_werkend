@@ -11,11 +11,17 @@ close all;
 
 %fmincon
 
+%Initial values of design vector
 Rootchord_0 = ;
 Taper_mid_0 = ;
 Root_twist_0 = ;
+Mid_twist_0 = ;
+Taper_tip_0 = ;
+Tip_span_0 = ;
+LE_sweep_tip_0 = ;
+Tip_twist_0 = ;
 
-x0 = ;
+x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweet_tip_0  Tip_twist_0];
 
 
 
