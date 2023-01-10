@@ -68,7 +68,6 @@ AC.Aero.M     = V_maxCruise/a;           % flight Mach number
 AC.Aero.Alpha = params.AoA;             % angle of attack -  comment this line to run the code for given cl 
 
 
-
 %% 
 tic
 
