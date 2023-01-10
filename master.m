@@ -2,6 +2,24 @@
 clear all;
 close all;
 
+
+%Create initial values for design vector x0
+
+%Create bounds for all variables in design vector ub, lb
+
+%Settings for fmincon
+
+%fmincon
+
+Rootchord_0 = ;
+Taper_mid_0 = ;
+Root_twist_0 = ;
+
+x0 = ;
+
+
+
+
 params = refParams();
 global loc_kink;
 loc_kink = params.loc_kink;
