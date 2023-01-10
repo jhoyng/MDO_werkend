@@ -1,19 +1,44 @@
 function [outputArg1,outputArg2] = Aerodynamics(x)
 
-Chord_root = ;
-Taper_mid = ;
-Incidence_root = ;
-Incidence_mid = ;
-Taper_tip = ;
-Span_tip = ;
-Sweep_LE_tip = ;
-Incidence_tip = ;
+%x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweet_tip_0  Tip_twist_0];
+%from design vector
+Chord_root = x(1);
+Taper_mid = x(2) ;
+Incidence_root = x(3);
+Incidence_mid = x(4);
+Incidence_tip = x(8);
+Taper_tip = x(5);
+Span_tip = x(6);
+Sweep_LE_tip = x(7);
+
+%Fixed values
+TE_sweep_mid = ;
+Span_mid = ;
+Dihedral = ;
+
+x_root = 0;
+y_root = 0;
+z_root = 0;
+Chord_root = Chord_root;
+Incidence_root = Incidence_root;
+x_mid = (Chord_root+sin(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
+y_mid = Span_mid;
+z_mid = Span_mid*Dihedral;
+Chord_mid = Taper_mid*Chord_root;
+Incidence_mid = Incidence_mid;
+x_tip = x_mid + Span_tip*sin(Sweep_LE_tip);
+y_tip = Span_tip + Span_mid;
+z_tip = Dihedral*y_tip;
+Chord_tip = Chord_mid*Taper_tip;
+Incidence_tip = Incidence_tip;
+
 
 % Wing planform geometry 
-%                x    y     z   chord(m)    twist angle (deg) 
-AC.Wing.Geom = [0     0     0     Chord_root         Incidence_root;
-                5.74  14.65   1.184     1.48         0];
-
+%                x    y     z   chord(m)          twist angle (deg) 
+AC.Wing.Geom = [x_root    y_root   z_root  Chord_root      Incidence_root;
+                x_mid     y_mid    z_mid   Chord_mid       Incidence_mid;
+                x_tip     y_tip    z_tip   Chord_tip       Incidence_tip];
+   
 % Wing incidence angle (degree)
 AC.Wing.inc  = 0;
             
