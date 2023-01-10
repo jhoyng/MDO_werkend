@@ -1,4 +1,4 @@
-function [outputArg1,outputArg2] = Aerodynamics(x)
+function [Aero_LD] = Aerodynamics(x)
 
 %x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweet_tip_0  Tip_twist_0];
 %from design vector
@@ -21,12 +21,12 @@ y_root = 0;
 z_root = 0;
 Chord_root = Chord_root;
 Incidence_root = Incidence_root;
-x_mid = (Chord_root+sin(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
+x_mid = (Chord_root+tan(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
 y_mid = Span_mid;
 z_mid = Span_mid*Dihedral;
 Chord_mid = Taper_mid*Chord_root;
 Incidence_mid = Incidence_mid;
-x_tip = x_mid + Span_tip*sin(Sweep_LE_tip);
+x_tip = x_mid + Span_tip*tan(Sweep_LE_tip);
 y_tip = Span_tip + Span_mid;
 z_tip = Dihedral*y_tip;
 Chord_tip = Chord_mid*Taper_tip;
