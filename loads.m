@@ -76,6 +76,9 @@ Res = Q3D_solver(AC);
 disp(Res.Wing.cl);
 toc
 
+%doesnt output load but outputs only Cl. This first has to be multiplied by
+%the root and q in order to resemble the load so for now it is still wrong.
+
 loadVector = [Res.Wing.Yst Res.Wing.cl]; 
 
 

@@ -15,8 +15,8 @@ AlR = coeffs(1,coeffsNr+1:coeffsNr*2);
 AuT = coeffs(2,1:coeffsNr);
 AlT = coeffs(2,coeffsNr+1:coeffsNr*2);
 
-AuM = (AuR*(1-loc_kink)+AuR*loc_kink);
-AlM = (AlR*(1-loc_kink)+AlR*loc_kink);
+AuM = (AuR*(1-loc_kink)+AuT*loc_kink);
+AlM = (AlR*(1-loc_kink)+AlT*loc_kink);
 
 
 
