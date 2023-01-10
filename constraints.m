@@ -1,5 +1,7 @@
 function [v_f] = constraints(x)
 
+
+global loc_kink
 coeffs = x.coeffs;
 span = x.span;
 chord1 = x.chord1;
@@ -8,22 +10,23 @@ chord3 = x.chord3;
 
 coeffsNr = 5;
 
-Au1 = coeffs(1,1:coeffsNr);
-Al1 = coeffs(1,coeffsNr+1:coeffsNr*2);
-Au2 = coeffs(2,1:coeffsNr);
-Al2 = coeffs(2,coeffsNr+1:coeffsNr*2);
-Au3 = coeffs(3,1:coeffsNr);
-Al3 = coeffs(3,coeffsNr+1:coeffsNr*2);
+AuR = coeffs(1,1:coeffsNr);
+AlR = coeffs(1,coeffsNr+1:coeffsNr*2);
+AuT = coeffs(2,1:coeffsNr);
+AlT = coeffs(2,coeffsNr+1:coeffsNr*2);
 
-global loc_kink
+AuM = (AuR*(1-loc_kink)+AuR*loc_kink);
+AlM = (AlR*(1-loc_kink)+AlR*loc_kink);
+
 
 
 %From all airfoils, 21 points are taken which means 20 
 xpoints = linspace(0,1,21)';
-[Xtu1,Xtl1,C1] = D_airfoil2(Au1,Al1,xpoints);
-[Xtu2,Xtl2,C2] = D_airfoil2(Au2,Al2,xpoints);
-[Xtu3,Xtl3,C3] = D_airfoil2(Au3,Al3,xpoints);
 
+[Xtu1,Xtl1,C1] = D_airfoil2(AuR,AlR,xpoints);
+[Xtu2,Xtl2,C2] = D_airfoil2(AuM,AlM,xpoints);
+[Xtu3,Xtl3,C3] = D_airfoil2(AuT,AlT,xpoints);
+disp([Xtu1,Xtu3]);
 
 %3 empty variables to start integrating over the 
 area_dimless1 = 0;

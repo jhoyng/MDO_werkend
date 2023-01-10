@@ -2,75 +2,43 @@ clear all;
 close all;
 
 params = refParams();
-chord1 = 6.05;
-chord2 = 4.16;
-chord3 = 1.42;
-span = 28.076;
-
 global loc_kink;
-
-
-% Wing planform geometry 
-%                x    y     z   chord(m)    twist angle (deg) 
-AC.Wing.Geom = [0     0     0     chord1         0;
-                2.26  4.73  0.698     chord2         0;
-                5.76  span/2   1.184     chord3         0];
-
-% Wing incidence angle (degree)
-AC.Wing.inc  = 0;
 loc_kink = params.loc_kink;
-Au1 = [0.2171    0.3450    0.2975    0.2685    0.2893];
-Al1 = [-0.1299   -0.2388   -0.1635   -0.0476    0.0797];
-% Xtu1 = [linspace(0,1,21)' ,ones(21,1)];
-% Al1 = [0 0 0 0 0];
-
-Au3 = [0.2171     0.4    0.2975    0.2685    0.2893];
-Al3 = [-0.1299   -0.15   -0.1635   -0.0476    0.0797];
-
-Au2 = (Au1*(1-loc_kink)+Au3*loc_kink);
-Al2 = (Al1*(1-loc_kink)+Al3*loc_kink);
 
 
+%Defign the root and tip airfoil
 
-            
-% Airfoil coefficients input matrix
-%                    | ->     upper curve coeff.                <-|   | ->       lower curve coeff.       <-| 
-AC.Wing.Airfoils   =    designVector.coeffs;
-                  
+AuR = [0.2171    0.3450    0.2975    0.2685    0.2893];
+AlR = [-0.1299   -0.2388   -0.1635   -0.0476    0.0797];
 
-AC.Wing.eta = [0;loc_kink;1];  % Spanwise location of the airfoil sections
+AuT = [0.2171     0.4    0.2975    0.2685    0.2893];
+AlT = [-0.1299   -0.15   -0.1635   -0.0476    0.0797];
 
-% Viscous vs inviscid
-AC.Visc  = 1;              % 0 for inviscid and 1 for viscous analysis
-AC.Aero.MaxIterIndex = 150;    %Maximum number of Iteration for the
-                                %convergence of viscous calculation
-                 
+%Calculate the airfoil at the kink by linear interpolation between the root
+%and tip chord.
 
-V_maxCruise = params.V_maxCruise;
-meanChord = params.meanChord;
-rho = params.density_cruise;
-alt = params.alt_cruise;
-viscosity = params.viscosity_cruise;
-T_cruise = params.T_cruise;
-Re = rho* meanChord*V_maxCruise/viscosity;
-AoA = params.AoA;
-a = sqrt(1.4*287*T_cruise);
 
-                                
-% Flight Condition
-AC.Aero.V     = V_maxCruise;            % flight speed (m/s)
-AC.Aero.rho   = rho;         % air density  (kg/m3)
-AC.Aero.alt   = alt;             % flight altitude (m)
-AC.Aero.Re    = Re;        % reynolds number (bqased on mean aerodynamic chord)
-AC.Aero.M     = V_maxCruise/a;           % flight Mach number 
-% AC.Aero.CL    = 0.4;          % lift coefficient - comment this line to run the code for given alpha%
-AC.Aero.Alpha = params.AoA;             % angle of attack -  comment this line to run the code for given cl 
+%put these coefficients in the design vector
+
+
+
+
+designVector.coeffs = [AuR;
+                AlR;
+                        AuT  AlT];
+
+designVector.chord1 = 6.05;
+designVector.chord2 = 4.16;
+designVector.chord3 = 1.42;
+designVector.span = 28.076;
+
+
+span = designVector.span;
+
 
 
 disp(constraints(designVector));
-
-
-
+res = loads(designVector);
 
 
 

@@ -23,7 +23,7 @@ AlT = [-0.1299   -0.15   -0.1635   -0.0476    0.0797];
 
 
 
-designVector.coeffs = [AuR  AlR;
+designVector.coeffs = [AuR   AlR;
                         AuT  AlT];
 
 designVector.chord1 = 6.05;
@@ -32,13 +32,11 @@ designVector.chord3 = 1.42;
 designVector.span = 28.076;
 
 
+
+
 span = designVector.span;
 
 
-
-global globalParam
-globalParam = 6;
-designVector.localParam = 7;
 
 disp(constraints(designVector));
 res = loads(designVector);
