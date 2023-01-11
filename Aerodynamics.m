@@ -1,7 +1,5 @@
 function [Aero_LD] = Aerodynamics(x)
 
-%x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweet_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5)  W_mtow_aero  W_fuel_aero];
-
 %from design vector
 Chord_root = x(1);
 Taper_mid = x(2) ;
@@ -11,8 +9,8 @@ Taper_tip = x(5);
 Span_tip = x(6);
 Sweep_LE_tip = x(7);
 Incidence_tip = x(8);
-W_mtow = x(29);
-W_fuel = x(30);
+W_mtow = x(29)*9.81;
+W_fuel = x(30)*9.81;
 
 %Fixed values from reference planform
 TE_sweep_mid = 4.6*(pi/180);            
@@ -72,7 +70,6 @@ viscosity = 1.444e-5;
 T_cruise = 218.808;
 %AoA = params.AoA;
 a = sqrt(1.4*287*T_cruise);
-Cruiseweight = 38780;                   %Functie voor design point uit assignment gebruiken
 Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*Span_tip;                        
 meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*Span_tip-(0.5*((Chord_mid-Chord_tip)/Span_tip)*Span_tip^2)));                        %Mean aerodynamic chord?
 Re = rho* meanChord*V_Cruise/viscosity;
@@ -94,3 +91,6 @@ tic
 
 Res = Q3D_solver(AC);
 toc
+
+CD_nowing = 0.0068;
+Aero_LD = Res.CLwing/(Res.CDwing+CD_nowing);
