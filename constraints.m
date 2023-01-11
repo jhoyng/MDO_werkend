@@ -19,7 +19,6 @@ AuM = (AuR*(1-loc_kink)+AuT*loc_kink);
 AlM = (AlR*(1-loc_kink)+AlT*loc_kink);
 
 
-
 %From all airfoils, 21 points are taken which means 20 
 xpoints = linspace(0,1,21)';
 
