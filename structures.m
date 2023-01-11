@@ -1,12 +1,13 @@
 function [W_strWing] = structures(x)
 
 
-% namefile    =    char('Fokke100');
-MTOW        =    43090;         %[kg]
-MZF         =    35830;         %[kg]
+%incidence angle toevoegen , mzf wordt fuel weight
+
+MTOW        =    x(29);         %[kg]
+MZF         =    x(30);         %[kg]
 nz_max      =    2.5;   
-span_tip        =    x(6);            %[m]
-root_chord =    x(1);           %[m]
+span_tip    =    x(6);            %[m]
+root_chord  =    x(1);           %[m]
 taper1       =    x(2);
 taper2       =    x(5);   
 sweep2_LE = x(7);
@@ -34,7 +35,8 @@ Ft_al       =    2.95E8;        %N/m2
 Fc_al       =    2.95E8;        %N/m2
 pitch_rib   =    0.5;          %[m]
 eff_factor  =    0.96;             %Depend on the stringer type
-Airfoil     =    'e553'; 
+Airfoil_root     =   'f100_root'; 
+Airfoil_tip     =    'f100_tip'; 
 section_num =    3;
 airfoil_num =    2;
 wing_surf   =    root_chord*(1+taper1)*y2+root_chord*(taper1 + taper1*taper2)*(y3-y2);
@@ -45,8 +47,8 @@ fprintf(fid, '%g \n',nz_max);
 
 fprintf(fid, '%g %g %g %g \n',wing_surf,span_tip*2,section_num,airfoil_num);
 
-fprintf(fid, '0 %s \n',Airfoil);
-fprintf(fid, '1 %s \n',Airfoil);
+fprintf(fid, '0 %s \n',Airfoil_root);
+fprintf(fid, '1 %s \n',Airfoil_tip);
 fprintf(fid, '%g %g %g %g %g %g \n',root_chord,                 x1,y1,z1,spar_front,spar_rear);
 fprintf(fid, '%g %g %g %g %g %g \n',root_chord*taper1,          x2,y2,z2,spar_front,spar_rear);
 fprintf(fid, '%g %g %g %g %g %g \n',root_chord*taper1*taper2,   x3,y3,z3,spar_front,spar_rear);

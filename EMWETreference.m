@@ -62,7 +62,8 @@ Ft_al       =    2.95E8;        %N/m2
 Fc_al       =    2.95E8;        %N/m2
 pitch_rib   =    0.5;          %[m]
 eff_factor  =    0.96;             %Depend on the stringer type
-Airfoil     =    'e553'; 
+Airfoil_root    =    'f100_root'; 
+Airfoil_tip     =    'f100_tip'; 
 section_num =    3;
 airfoil_num =    2;
 wing_surf   =    root_chord*(1+taper1)*y2+root_chord*(taper1 + taper1*taper2)*(y3-y2);
@@ -73,8 +74,8 @@ fprintf(fid, '%g \n',nz_max);
 
 fprintf(fid, '%g %g %g %g \n',wing_surf,span_tip*2,section_num,airfoil_num);
 
-fprintf(fid, '0 %s \n',Airfoil);
-fprintf(fid, '1 %s \n',Airfoil);
+fprintf(fid, '0 %s \n',Airfoil_root);
+fprintf(fid, '1 %s \n',Airfoil_tip);
 fprintf(fid, '%g %g %g %g %g %g \n',root_chord,                 x1,y1,z1,spar_front,spar_rear);
 fprintf(fid, '%g %g %g %g %g %g \n',root_chord*taper1,          x2,y2,z2,spar_front,spar_rear);
 fprintf(fid, '%g %g %g %g %g %g \n',root_chord*taper1*taper2,   x3,y3,z3,spar_front,spar_rear);
@@ -97,10 +98,12 @@ EMWET Fokker100reference
 
 fileID = fopen('Fokker100reference.weight','r');
 formatSpec = '%s';
-sizeA = [2 Inf];
 
 A = textscan(fileID,formatSpec,'Delimiter','\n');
 fclose(fileID);
 
 W_strWing = str2double(A{1,1}{1,1}(23:29));
+W_fuel = MTOW - MZF;
+
+W_AW = MTOW - W_fuel - W_strWing;  %klopt dit?
 
