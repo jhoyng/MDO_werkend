@@ -93,3 +93,6 @@ tic
 
 Res = Q3D_solver(AC);
 toc
+
+q = 0.5*rho*(V_Cruise^2);%dynamic pressure
+loadVector = [Res.Wing.Yst/(Span_tip/Span_mid)  Res.Wing.ccl*q  Res.Wing.cm_c4*meanChord*Res.Wing.chord*q];
