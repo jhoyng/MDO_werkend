@@ -20,8 +20,8 @@ Taper_tip_0 = ;
 Tip_span_0 = ;
 LE_sweep_tip_0 = ;
 Tip_twist_0 = ;
-W_mtwo_aero = ;
-W_fuel_aero = ;
+W_mtwo_aero = ; %[Newton]
+W_fuel_aero = ; %[Newton]
 
 %Defign the root and tip airfoil
 %e553
