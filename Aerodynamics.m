@@ -12,11 +12,13 @@ Taper_tip = x(5);
 Span_tip = x(6);
 Sweep_LE_tip = x(7);
 
-%Fixed values
-TE_sweep_mid = ;
-Span_mid = ;
-Dihedral = ;
+%Fixed values from reference planform
+TE_sweep_mid = 4.6*(pi/180);            
+Span_mid = 4.64;                
+Dihedral = 3*(pi/180);                
 
+
+%Planform description
 x_root = 0;
 y_root = 0;
 z_root = 0;
@@ -35,7 +37,7 @@ Incidence_tip = Incidence_tip;
 
 
 % Wing planform geometry 
-%                x    y     z   chord(m)          twist angle (deg) 
+%               x         y        z       chord(m)        twist angle (deg) 
 AC.Wing.Geom = [x_root    y_root   z_root  Chord_root      Incidence_root;
                 x_mid     y_mid    z_mid   Chord_mid       Incidence_mid;
                 x_tip     y_tip    z_tip   Chord_tip       Incidence_tip];
@@ -51,33 +53,34 @@ AC.Wing.Airfoils   =    [AuR(1)    AuR(2)    AuR(3)    AuR(4)    AuR(5)        A
                          AuT(1)    AuT(2)    AuT(3)    AuT(4)    AuT(5)        AlT(1)   AlT(2)   AlT(3)   AlT(4)    AlT(5)];
                   
 
-AC.Wing.eta = [0;1];  % Spanwise location of the airfoil sections
+AC.Wing.eta = [0;1];                    % Spanwise location of the airfoil sections
 
 % Viscous vs inviscid
-AC.Visc  = 1;              % 0 for inviscid and 1 for viscous analysis
-AC.Aero.MaxIterIndex = 150;    %Maximum number of Iteration for the
-                                %convergence of viscous calculation
+AC.Visc  = 1;                           % 0 for inviscid and 1 for viscous analysis
+AC.Aero.MaxIterIndex = 150;             %Maximum number of Iteration for the
+                                        %convergence of viscous calculation
                  
 
 V_Cruise = 414*0.514444;
-meanChord = 3.8;                    %Mean chord, or mean aerodynamic chord?
+
+
 rho = 0.3796;
 alt = 35000*0.3048;
 viscosity = 1.444e-5;
 T_cruise = 218.808;
-Re = rho* meanChord*V_Cruise/viscosity;
 %AoA = params.AoA;
 a = sqrt(1.4*287*T_cruise);
-CruiseLD = 16;
-Cruiseweight = 38780;                    %Nu MTOW gepakt
-Wingarea = 93.50;
-                                
+Cruiseweight = 38780;                   %Functie voor design point uit assignment gebruiken
+Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*Span_tip;                        
+meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*Span_tip-(0.5*((Chord_mid-Chord_tip)/Span_tip)*Span_tip^2)));                        %Mean aerodynamic chord?
+Re = rho* meanChord*V_Cruise/viscosity;
+
 % Flight Condition
-AC.Aero.V     = V_Cruise;            % flight speed (m/s)
+AC.Aero.V     = V_Cruise;               % flight speed (m/s)
 AC.Aero.rho   = rho;                    % air density  (kg/m3)
 AC.Aero.alt   = alt;                    % flight altitude (m)
 AC.Aero.Re    = Re;                     % reynolds number (bqased on mean aerodynamic chord)
-AC.Aero.M     = V_Cruise/a;          % flight Mach number 
+AC.Aero.M     = V_Cruise/a;             % flight Mach number 
 AC.Aero.CL    = 2*9.81*Cruiseweight/(rho*(V_Cruise^2)*Wingarea);                    % lift coefficient - comment this line to run the code for given alpha%
 %AC.Aero.Alpha = params.AoA;            % angle of attack -  comment this line to run the code for given cl 
 
