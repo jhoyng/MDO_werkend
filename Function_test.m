@@ -39,25 +39,31 @@ x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_
 
 %Werkt volgensmij naar behoren
 %[loadVector] = loads(x0);
+% 
+% %obtaining initial values for Cd_nowing and W_nowing
+% CD_nowing = fun_findCda_w(x0);
+% W_nowing = fun_findW_AW(x0);
+% 
+% 
+% %Going through all disciplines for the reference aircraft
+% LD = Aerodynamics(x0);
+% loads(x0);
+% W_wing = structures(x0);
+% W_endOverStart = performance(x0,LD);  %LD is directly fed into performance
+% 
+% %objective function
+% MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);
+% 
+% disp(MTOW);
 
-%obtaining initial values for Cd_nowing and W_nowing
-CD_nowing = fun_findCda_w(x0);
-W_nowing = fun_findW_AW(x0);
+global fid_test
 
-
-%Going through all disciplines for the reference aircraft
-LD = Aerodynamics(x0);
-loads(x0);
-W_wing = structures(x0);
-W_endOverStart = performance(x0,LD);  %LD is directly fed into performance
-
-%objective function
-MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);
-
-disp(MTOW);
-
-
-
+fid_test = fopen('data_test.weight','wt');
+fprintf(fid_test, '%g %g \n', 4, 6);
+structures(x0);
+structures(x0);
+fclose(fid_test);
+%disp(objective_test(x0));
 
 
 

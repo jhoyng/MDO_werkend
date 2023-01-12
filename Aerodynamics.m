@@ -59,7 +59,7 @@ AC.Wing.eta = [0;1];                    % Spanwise location of the airfoil secti
 AC.Visc  = 1;                           % 0 for inviscid and 1 for viscous analysis
 AC.Aero.MaxIterIndex = 150;             %Maximum number of Iteration for the
                                         %convergence of viscous calculation
-
+global V_Cruise;
 
 V_Cruise = 414*0.514444;
 
@@ -85,10 +85,8 @@ AC.Aero.CL    = 2*L_des/(rho*(V_Cruise^2)*Wingarea);                    % lift c
 %AC.Aero.Alpha = params.AoA;            % angle of attack -  comment this line to run the code for given cl 
 
 
-
 %% 
 tic
-
 Res = Q3D_solver(AC);
 toc
 
