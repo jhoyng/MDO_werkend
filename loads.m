@@ -1,6 +1,7 @@
 function [loadVector] = loads(x)
 
-%from design vector
+%x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweet_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5)  W_mtow_aero  W_fuel_aero];
+
 Chord_root = x(1);
 Taper_mid = x(2) ;
 Incidence_root = x(3);
@@ -48,7 +49,7 @@ AC.Wing.inc  = 0;
 
 %x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweet_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5)];
 % Airfoil coefficients input matrix
-%                    | ->     upper curve coeff.              <-|       | ->       lower curve coeff.       <-| 
+%                    | ->     upper curve coeff.                    <-|       | ->       lower curve coeff.             <-| 
 AC.Wing.Airfoils   =    [x(9)    x(10)    x(11)    x(12)    x(13)        x(14)   x(15)   x(16)   x(17)    x(18);
                          x(19)   x(20)    x(21)    x(22)    x(23)        x(24)   x(25)   x(26)   x(27)    x(28)];
 
@@ -92,6 +93,3 @@ tic
 
 Res = Q3D_solver(AC);
 toc
-
-q = 0.5*rho*(V_Cruise^2);%dynamic pressure
-loadVector = [Res.Wing.Yst/(Span_tip+Span_mid)  Res.Wing.ccl.*q  Res.Wing.cm_c4.*meanChord.*Res.Wing.chord.*q];
