@@ -4,7 +4,7 @@ function [W_strWing] = structures(x)
 %incidence angle toevoegen , mzf wordt fuel weight
 
 MTOW        =    x(29);         %[kg]
-MZF         =    x(30);         %[kg]
+MZF         =    x(29)- x(30);         %[kg]
 nz_max      =    2.5;   
 span_tip    =    x(6);            %[m]
 root_chord  =    x(1);           %[m]
@@ -77,5 +77,8 @@ fclose(fileID);
 
 W_strWing = str2double(A{1,1}{1,1}(23:29));
 
+
+% global fid_test
+% fprintf(fid_test, '%g %g \n', 4, 6);
 
 end
