@@ -56,13 +56,20 @@ x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_
 % 
 % disp(MTOW);
 
-global fid_test
+global fid_data;
 
-fid_test = fopen('data_test.weight','wt');
-fprintf(fid_test, '%g %g \n', 4, 6);
+fid_data = fopen('dataObtained.dat','wt');
+
+fprintf(fid_data, '%15s%15s%15s%15s%15s%15s\n' ,'L/D' ,'L_mean', 'M_mean', 'C_mean','W_wing', 'W_frac');
+%%
+Aerodynamics(x0);
+loads(x0);
+
 structures(x0);
-structures(x0);
-fclose(fid_test);
+performance(x0,16);
+
+
+fclose(fid_data);
 %disp(objective_test(x0));
 
 

@@ -98,3 +98,9 @@ fid = fopen( 'Fokker100.load','wt');
 for i = 1:14
     fprintf(fid, '%g %g %g \n' ,loadVector(i,1),loadVector(i,2),loadVector(i,2));
 end
+
+%print the means of the loadvector in the data file
+global fid_data
+fprintf(fid_data, '%15g%15g%15g',mean(loadVector(:,1)),mean(loadVector(:,2)),mean(loadVector(:,3)));
+
+end

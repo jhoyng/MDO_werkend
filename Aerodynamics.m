@@ -92,3 +92,8 @@ toc
 
 CD_nowing = 0.0068;
 Aero_LD = Res.CLwing/(Res.CDwing+CD_nowing);
+
+global fid_data
+fprintf(fid_data, '%15g', Aero_LD);
+
+end

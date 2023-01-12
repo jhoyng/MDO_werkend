@@ -78,7 +78,8 @@ fclose(fileID);
 W_strWing = str2double(A{1,1}{1,1}(23:29));
 
 
-% global fid_test
-% fprintf(fid_test, '%g %g \n', 4, 6);
+%write wing weight on the data file
+global fid_data
+fprintf(fid_data, '%15g', W_strWing);
 
 end

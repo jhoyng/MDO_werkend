@@ -38,13 +38,12 @@ W_fuel_0 = 13365*0.81715;           %[m^3]*[kg/m^3] = [kg]
 
 %Defign the root and tip airfoil
 %e553
-AuR = [0.2171    0.3450    0.2975    0.2685    0.2893];
-AlR = [-0.1299   -0.2388   -0.1635   -0.0476    0.0797];
-
-%the 0.1 and -0.05 are chosen  in order to make the tip thinner than the
-%root
-AuT = [0.2171     0.1    0.2975    0.2685    0.2893];
-AlT = [-0.1299   -0.05   -0.1635   -0.0476    0.0797];
+%Defign the root and tip airfoil
+%f100 root and tip
+AuR =[0.153528825211809;0.114367804944869;0.212917645596938;0.119276832908319;0.069646397047114];
+AlR = [-0.169319963986527;-0.092193075229581;-0.302733614226347;-0.092782085231768;-0.108253650607020];
+AuT =[0.180964236453140;0.112375548755489;0.199250369688744;0.144259294381080;0.150037563263751];
+AlT = [-0.152238948766128;0.102651482055201;-0.333682672036304;0.114339150685438;-0.156366477902652];
 
 
 
@@ -61,14 +60,27 @@ ub = [6.5                1            6       6             0.5         16      
 lb = [5                 0.5             -6    -6           0.2          12          10              -4          -0.5      -0.5   -0.5   -0.5     -0.5    -0.5    -0.5    -0.5    -0.5    -0.5   -0.5      -0.5  -0.5   -0.5     -0.5    -0.5     -0.5    -0.5    -0.5    -0.5   30000     10000];
 
 %%
+
+%show reference geometry
+showGeometry(x0);
+
+%make a file to write all wanted data to 
+global fid_data;
+fid_data = fopen('dataObtained.dat','wt');
+%print top row with all variables
+fprintf(fid_data, '%15s%15s%15s%15s%15s%15s\n' ,'L/D' ,'L_mean', 'M_mean', 'C_mean','W_wing', 'W_frac');
+%%
+
+%%
 global CD_nowing;
 global W_nowing;
 CD_nowing = fun_findCda_w(x0);
 W_nowing = fun_findW_AW(x0);
 %%
 
-
 options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
 [x_upper,fval,exitflag,output] = fmincon(@objective,x0,[],[],[],[],lb,ub,[],options);
 
 
+%close data file
+fclose(fid_data);
