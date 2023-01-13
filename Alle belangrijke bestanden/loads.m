@@ -9,8 +9,8 @@ Taper_tip = x(5);
 Span_tip = x(6);
 Sweep_LE_tip = x(7);
 Incidence_tip = x(8);
-W_mtow = x(29);
-W_fuel = x(30);
+W_mtow = x(29)*9.81;
+W_fuel = x(30)*9.81;
 
 %Fixed values from reference planform
 TE_sweep_mid = 4.6*(pi/180);            
