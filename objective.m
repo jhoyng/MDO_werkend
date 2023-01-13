@@ -27,7 +27,14 @@ disp(W_fuelMax);
 %objective function
 MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);
 
+global couplings;
 
+vararg = {LD,W_f,x(30),x(31)};  %snap nog niet precies wat dit doet, is in Tutorial 3 ook een output
+couplings.LD = LD;
+couplings.W_fuelMax = W_fuelMax;  %Voor de inequality constraint dat fuel volume groot genoeg is.
+couplings.MTOW = MTOW;
+couplings.W_wing = W_wing;
+couplings.W_endOverStart = W_endOverStart;
 
 
 

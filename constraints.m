@@ -1,7 +1,6 @@
 function [c, ceq] = constraints(x)
 %Global parameters
 global couplings;
-W_f = couplings.W_f;
 LD = couplings.LD;
 W_fuelMax = couplings.W_fuelMax;
 MTOW = couplings.MTOW;
@@ -13,7 +12,7 @@ W_endOverStart = couplings.W_endOverStart;
 %LD = x(31);
 %W_mtow_0 = x(29);
 
-cc1 = (W_f - x(30));        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
+cc1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - x(30));        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
 cc2 = (LD - x(31));         %Constraint that LD of x0 equals output of aerodynamics
 cc3 = (MTOW - x(29));       %Constraint that MTOW of x0 equals that of the objective function
 
