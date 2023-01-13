@@ -2,7 +2,6 @@ function showGeometry(x)
 global x_0normalizing
 x = x.*x_0normalizing;
 
-
 MTOW        =    x(29);         %[kg]
 MZF         =    x(29)- x(30);         %[kg]
 nz_max      =    2.5;   

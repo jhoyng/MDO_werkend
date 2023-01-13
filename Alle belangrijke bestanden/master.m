@@ -1,27 +1,6 @@
 
 clear all;
 close all;
-
-
-%Create initial values for design vector x0
-
-%Create bounds for all variables in design vector ub, lb
-
-%Settings for fmincon
-
-%fmincon
-
-
-% % namefile    =    char('Fokke100');
-% MTOW        =    43090;         %[kg]
-% MZF         =    35830;         %[kg]
-% nz_max      =    2.5;   
-% span        =    28.076;            %[m]
-% root_chord =    5.78;           %[m]
-% taper1       =    0.699;
-% taper2       =    0.249;   
-% sweep2_LE = 19.37;
-
 %Initial values of design vector
 Rootchord_0 = 5.78 ;
 Taper_mid_0 = 0.699;
@@ -48,10 +27,10 @@ x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_
 %x0 =[    1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30    31]; 
 
 coeff_mean = 0.15;
+
+
 global x_0normalizing
-x_0normalizing = [x0(1:8)  coeff_mean*ones(1,20)  x0(29:31)];
-
-
+x_0normalizing = abs([x0(1:8)  coeff_mean*ones(1,20)  x0(29:31)]);
 
 %Creating bounds for the design variables
 %Upper bounds
@@ -63,23 +42,12 @@ ub_n = ub./x_0normalizing;
 lb = [5                 0.5             -6    -6           0.2          12          10              -4          -0.5      -0.5   -0.5   -0.5     -0.5    -0.5    -0.5    -0.5    -0.5    -0.5   -0.5      -0.5  -0.5   -0.5     -0.5    -0.5     -0.5    -0.5    -0.5    -0.5   30000     10000    6];
 lb_n = lb./x_0normalizing;
 %%
-bound_diff = ub_n-lb_n;
-
+bounddiff = ub_n-lb_n;
+%Normalized x0 vector
 x0_n = x0./x_0normalizing;
 
-%Voor de input van fmincon moet x0 ook genormaliseerd worden. (x0/x0 dus).
-%Maar dan moet je in elke functie x wel weer vermenigvuldigen met de
-%initiele x0. 
-%idee:
-%x0_n  = x0/x0;
-% En dan x0 global maken zodat je in elke functie in het begin krijgt: 
-% global initialvalues;
-% x0 = initialvalues.x0;
-% x = x*x0;
-
-
 %show reference geometry
-showGeometry(x0_n);
+%showGeometry(x0_n);
 
 
 %set this true if you want the data to be written to the data files
@@ -104,16 +72,9 @@ fid_coeffs = fopen('dataCoeffs.dat','wt');
 fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Root Upper',  'Coefficients Root Lower');
 fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip Lower');
 
-%%
-global CD_nowing;
-global W_nowing;
-%CD_nowing = fun_findCda_w(x0);  
-W_nowing = 1100;
-%W_nowing = fun_findW_AW(x0);
-%%
 
 options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
-[x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb,ub,[],options);
+[x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb_n,ub_n,[],options);
 
 
 %close data file

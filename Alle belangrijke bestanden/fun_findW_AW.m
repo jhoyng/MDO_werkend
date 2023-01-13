@@ -1,8 +1,6 @@
-function [W_strWing,W_fmax] = structures(x)
-% global x_0normalizing
-% x = x.*x_0normalizing;
-
-
+function [W_AW] = fun_findW_AW(x)
+global x_0normalizing
+x = x.*x_0normalizing;
 %incidence angle toevoegen , mzf wordt fuel weight
 
 MTOW        =    x(29);         %[kg]
@@ -78,74 +76,7 @@ A = textscan(fileID,formatSpec,'Delimiter','\n');
 fclose(fileID);
 
 W_strWing = str2double(A{1,1}{1,1}(23:29));
+W_fuel = MTOW - MZF;
 
-
-loc_kink = sweep1_TE / span_tip;
-chord1 = root_chord;
-chord2 = root_chord*taper1;
-chord3 = root_chord*taper1*taper2;
-
-AuR = [x(9)    x(10)    x(11)    x(12)    x(13)]; 
-AlR = [x(14)   x(15)   x(16)   x(17)    x(18)];
-AuT = [x(19)   x(20)    x(21)    x(22)    x(23)];
-AlT = [x(24)   x(25)   x(26)   x(27)    x(28)];
-
-AuM = (AuR*(1-loc_kink)+AuT*loc_kink);
-AlM = (AlR*(1-loc_kink)+AlT*loc_kink);
-
-
-%From all airfoils, 21 points are taken which means 20 
-xpoints = linspace(0,1,21)';
-
-[Xtu1,Xtl1,C1] = D_airfoil2(AuR,AlR,xpoints);
-[Xtu2,Xtl2,C2] = D_airfoil2(AuM,AlM,xpoints);
-[Xtu3,Xtl3,C3] = D_airfoil2(AuT,AlT,xpoints);
-
-
-%3 empty variables to start integrating over the 
-area_dimless1 = 0;
-area_dimless2 = 0;
-area_dimless3 = 0;
-
-
-for i = (5:12)
-    area_dimless1 = area_dimless1+ (Xtu1(i,2)-Xtl1(i,2))/20;
-end
-
-for i = (5:12)
-    area_dimless2 = area_dimless2+ (Xtu2(i,2)-Xtl2(i,2))/20;
-end
-
-for i = (5:12)
-    area_dimless3 = area_dimless3+ (Xtu3(i,2)-Xtl3(i,2))/20;
-end
-
-A1 = area_dimless1*chord1^2;
-A2 = area_dimless1*chord2^2;
-
-A3 = area_dimless1*chord3^2;
-
-v_f1 = loc_kink * span_tip * (A1+A2)/2;
-
-frac2_3 = 1-loc_kink;
-frac2_85 = 0.85 - loc_kink;
-A85 = (1-frac2_85/frac2_3)*A2+frac2_85/frac2_3*A3;
-v_f2 = frac2_85*span_tip*(A2+A85)/2;
-v_f = (v_f2+v_f1)*0.93;
-W_fmax = v_f*0.81715e3*2;
-v_ftotalLitres = v_f*1000*0.93;
-
-
-%write wing weight on the data file
-global write_data
-
-
-if write_data == true
-    global fid_data
-    fprintf(fid_data, '%15g', W_strWing);
-end
-
-
-
-
+W_AW = MTOW - W_fuel - W_strWing;  %klopt dit?
 end

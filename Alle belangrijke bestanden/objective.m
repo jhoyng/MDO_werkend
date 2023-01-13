@@ -1,9 +1,7 @@
 function [MTOW] = objective(x)
 global x_0normalizing
 x = x.*x_0normalizing;
-
-global CD_nowing;
-global W_nowing;
+W_nowing = 3.110115025000000e+04;
 
 %make a file to write all wanted data to 
 global write_data;
@@ -21,6 +19,7 @@ if write_data == true
 end
 
 %Going through all disciplines for the reference aircraft
+%LD = Aerodynamics(x);
 LD = Aerodynamics(x);
 loads(x);
 [W_wing,W_fuelMax] = structures(x);
@@ -31,8 +30,6 @@ disp(W_fuelMax);
 MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);
 
 global couplings;
-
-vararg = {LD,W_f,x(30),x(31)};  %snap nog niet precies wat dit doet, is in Tutorial 3 ook een output
 couplings.LD = LD;
 couplings.W_fuelMax = W_fuelMax;  %Voor de inequality constraint dat fuel volume groot genoeg is.
 couplings.MTOW = MTOW;
