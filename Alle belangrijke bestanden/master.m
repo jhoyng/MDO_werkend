@@ -74,7 +74,7 @@ bound_diff = ub_n-lb_n;
 % x = x*x0;
 
 
-%show reference geometry
+show reference geometry
 showGeometry(x0);
 
 
