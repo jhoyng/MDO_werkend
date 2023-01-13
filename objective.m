@@ -20,8 +20,9 @@ end
 %Going through all disciplines for the reference aircraft
 LD = Aerodynamics(x);
 loads(x);
-W_wing = structures(x);
-W_endOverStart = performance(x,LD);  %LD is directly fed into performance
+[W_wing,W_fuelMax] = structures(x);
+W_endOverStart = performance(x);  %LD is directly fed into performance
+disp(W_fuelMax);
 
 %objective function
 MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);

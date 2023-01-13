@@ -15,6 +15,7 @@ LE_sweep_tip_0 = 19.37 ;
 W_mtow_0 =  43090;         %[kg]
 W_zerofuel =  35830;         %[kg]
 W_fuel_0 = 13365*0.81715;           %[m^3]*[kg/m^3] = [kg]
+LD = 16;
 
 %Defign the root and tip airfoil
 %e553
@@ -28,39 +29,12 @@ AlT = [-0.1299   -0.05   -0.1635   -0.0476    0.0797];
 
 
 
-x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0];
-%x0 =[    1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30   ]; 
+x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD];
+%x0 =[    1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30    31]; 
 
-%make a file to write all wanted data to 
-global fid_coeffs;
-fid_coeffs = fopen('dataCoeffs.dat','wt');
-%print top row with all variables
-fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Root Upper',  'Coefficients Root Lower');
-fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip Lower');
-fprintf(fid_coeffs, '\n');
-fprintf(fid_coeffs, '%13g' , x0(9:18));
-fprintf(fid_coeffs, '\n');
-fprintf(fid_coeffs, '%13g' , x0(19:28));
-fprintf(fid_coeffs, '\n\n');
+objective(x0);
 
 
-fprintf(fid_coeffs, '\n');
-fprintf(fid_coeffs, '%13g' , x0(9:18));
-fprintf(fid_coeffs, '\n');
-fprintf(fid_coeffs, '%13g' , x0(19:28));
-fprintf(fid_coeffs, '\n\n');
-
-
-fprintf(fid_coeffs, '\n');
-fprintf(fid_coeffs, '%13g' , x0(9:18));
-fprintf(fid_coeffs, '\n');
-fprintf(fid_coeffs, '%13g' , x0(19:28));
-fprintf(fid_coeffs, '\n\n');
-% objective(x0);
-
-%--------------------------------------------------------------------------------------------------------------------------------------------------------
-% Aerodynamics(x0);
-% showGeometry(x0);
 
 
 
