@@ -46,11 +46,10 @@ AlR = [-0.169319963986527;-0.092193075229581;-0.302733614226347;-0.0927820852317
 AuT =[0.180964236453140;0.112375548755489;0.199250369688744;0.144259294381080;0.150037563263751];
 AlT = [-0.152238948766128;0.102651482055201;-0.333682672036304;0.114339150685438;-0.156366477902652];
 
-
-
 x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
 %x0 =[    1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30    31]; 
 
+coeff_mean = 0.15;
 global x_0normalizing
 x_0normalizing = [x0(1:8)  coeff_mean*ones(1,20)  x0(29:31)];
 
@@ -81,13 +80,13 @@ x0_n = x0./x_0normalizing;
 % x = x*x0;
 
 
-show reference geometry
+%show reference geometry
 showGeometry(x0);
 
 
 %set this true if you want the data to be written to the data files
 global write_data
-write_data = true;
+write_data = false;
 
 %make a file to write all wanted data to from within the different
 %disciplines every iteration
@@ -110,12 +109,13 @@ fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip L
 %%
 global CD_nowing;
 global W_nowing;
-CD_nowing = fun_findCda_w(x0);
-W_nowing = fun_findW_AW(x0);
+%CD_nowing = fun_findCda_w(x0);  
+W_nowing = 1100;
+%W_nowing = fun_findW_AW(x0);
 %%
 
 options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
-[x_upper,fval,exitflag,output] = fmincon(@objective,x0,[],[],[],[],lb,ub,[],options);
+[x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb,ub,[],options);
 
 
 %close data file
