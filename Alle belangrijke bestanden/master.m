@@ -81,7 +81,7 @@ x0_n = x0./x_0normalizing;
 
 
 %show reference geometry
-showGeometry(x0);
+showGeometry(x0_n);
 
 
 %set this true if you want the data to be written to the data files
