@@ -55,13 +55,13 @@ x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_
 %Upper bounds
 %ub = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
 ub = [6.5                1            6       6             0.5         16          25              4           0.5       0.5    0.5    0.5      0.5     0.5     0.5     0.5     0.5     0.5    0.5       0.5    0.5    0.5      0.5     0.5     0.5     0.5     0.5     0.5   50000     20000    30];
-
+ub_n = ub./x0;
 %Lower bounds
 %lb = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
 lb = [5                 0.5             -6    -6           0.2          12          10              -4          -0.5      -0.5   -0.5   -0.5     -0.5    -0.5    -0.5    -0.5    -0.5    -0.5   -0.5      -0.5  -0.5   -0.5     -0.5    -0.5     -0.5    -0.5    -0.5    -0.5   30000     10000    6];
-
+lb_n = lb./x0;
 %%
-
+bound_diff = ub_n-lb_n;
 %show reference geometry
 showGeometry(x0);
 
