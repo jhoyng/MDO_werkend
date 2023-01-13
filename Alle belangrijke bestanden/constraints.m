@@ -4,7 +4,7 @@ global couplings;
 LD = couplings.LD;
 W_fuelMax = couplings.W_fuelMax;
 MTOW = couplings.MTOW;
-W_a_w = ;
+W_a_w = 1100;  %Nader in te vullen
 W_wing = couplings.W_wing;
 W_endOverStart = couplings.W_endOverStart;
 
