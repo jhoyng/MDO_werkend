@@ -55,7 +55,7 @@ AC.Wing.Airfoils   =    [x(9)    x(10)    x(11)    x(12)    x(13)        x(14)  
 AC.Wing.eta = [0;1];                    % Spanwise location of the airfoil sections
 
 % Viscous vs inviscid
-AC.Visc  = 1;                           % 0 for inviscid and 1 for viscous analysis
+AC.Visc  = 0;                           % 0 for inviscid and 1 for viscous analysis
 AC.Aero.MaxIterIndex = 150;             %Maximum number of Iteration for the
                                         %convergence of viscous calculation
 global V_Cruise;
@@ -90,8 +90,8 @@ Res = Q3D_solver(AC);
 
 
 CD_nowing = 0.015332090837714;
-Aero_LD = Res.CLwing/(Res.CDwing+CD_nowing); %For viscous
-%Aero_LD = Res.CLwing/(Res.CDiwing+CD_nowing); %For inviscid
+%Aero_LD = Res.CLwing/(Res.CDwing+CD_nowing); %For viscous
+Aero_LD = Res.CLwing/(Res.CDiwing+CD_nowing); %For inviscid
 
 
 %write L over D on the data file
