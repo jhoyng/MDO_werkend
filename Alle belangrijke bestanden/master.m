@@ -22,7 +22,6 @@ close all;
 % taper2       =    0.249;   
 % sweep2_LE = 19.37;
 
-sweep1_TE   =   4.60;  %Deze kan weg toch?
 %Initial values of design vector
 Rootchord_0 = 5.78 ;
 Taper_mid_0 = 0.699;
@@ -33,7 +32,6 @@ Tip_twist_0 = -0.44;
 Tip_span_0 = 14.038 ;
 LE_sweep_tip_0 = 19.37 ;
 W_mtow_0 =  43090;         %[kg]
-W_zerofuel =  35830;         %[kg]  %Deze kan weg toch?
 W_fuel_0 = 13365*0.81715;           %[m^3]*[kg/m^3] = [kg]
 LD_0 = 16;
 
