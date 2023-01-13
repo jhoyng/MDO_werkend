@@ -1,4 +1,6 @@
 function [W_endOverStart] = performance(x)
+global x_0normalizing
+x = x.*x_0normalizing;
 
 LD = x(31);
 

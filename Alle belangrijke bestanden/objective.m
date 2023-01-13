@@ -1,4 +1,7 @@
 function [MTOW] = objective(x)
+global x_0normalizing
+x = x.*x_0normalizing;
+
 global CD_nowing;
 global W_nowing;
 

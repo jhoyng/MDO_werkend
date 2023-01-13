@@ -1,4 +1,6 @@
 function showGeometry(x)
+global x_0normalizing
+x = x.*x_0normalizing;
 
 
 MTOW        =    x(29);         %[kg]

@@ -1,5 +1,6 @@
 function [loadVector] = loads(x)
-
+global x_0normalizing
+x = x.*x_0normalizing;
 %from design vector
 Chord_root = x(1);
 Taper_mid = x(2) ;
