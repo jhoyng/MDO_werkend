@@ -1,12 +1,10 @@
 function [c, ceq] = constraints(x)
-global x_0normalizing
-x = x.*x_0normalizing;
 %Global parameters
 global couplings;
 LD = couplings.LD;
 W_fuelMax = couplings.W_fuelMax;
 MTOW = couplings.MTOW;
-W_a_w = 3.110115025000000e+04;  %Nader in te vullen
+W_a_w = ;
 W_wing = couplings.W_wing;
 W_endOverStart = couplings.W_endOverStart;
 

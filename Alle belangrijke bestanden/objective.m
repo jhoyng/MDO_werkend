@@ -1,7 +1,6 @@
 function [MTOW] = objective(x)
-global x_0normalizing
-x = x.*x_0normalizing;
-W_nowing = 3.110115025000000e+04;
+global CD_nowing;
+global W_nowing;
 
 %make a file to write all wanted data to 
 global write_data;
@@ -10,6 +9,10 @@ if write_data == true
     fprintf(fid_vector, '%13g' , [x(1:8) x(29:30)]);
     fprintf(fid_vector, '\n');
     
+    global fid_fullVector
+    fprintf(fid_fullVector, '%13g' , x(:));
+    fprintf(fid_fullVector, '\n');
+
     global fid_coeffs;
     fprintf(fid_coeffs, '\n');
     fprintf(fid_coeffs, '%13g' , x(9:18));
@@ -29,6 +32,8 @@ disp(W_fuelMax);
 MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);
 
 global couplings;
+
+vararg = {LD,W_f,x(30),x(31)};  %snap nog niet precies wat dit doet, is in Tutorial 3 ook een output
 couplings.LD = LD;
 couplings.W_fuelMax = W_fuelMax;  %Voor de inequality constraint dat fuel volume groot genoeg is.
 couplings.MTOW = MTOW;

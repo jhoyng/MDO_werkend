@@ -1,6 +1,4 @@
 function [W_strWing,W_fmax] = structures(x)
-% global x_0normalizing
-% x = x.*x_0normalizing;
 
 
 %incidence angle toevoegen , mzf wordt fuel weight

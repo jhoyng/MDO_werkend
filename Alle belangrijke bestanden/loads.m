@@ -1,4 +1,5 @@
 function [loadVector] = loads(x)
+
 %from design vector
 Chord_root = x(1);
 Taper_mid = x(2) ;
@@ -8,8 +9,8 @@ Taper_tip = x(5);
 Span_tip = x(6);
 Sweep_LE_tip = x(7);
 Incidence_tip = x(8);
-W_mtow = x(29)*9.81;
-W_fuel = x(30)*9.81;
+W_mtow = x(29);
+W_fuel = x(30);
 
 %Fixed values from reference planform
 TE_sweep_mid = 4.6*(pi/180);            
@@ -70,7 +71,7 @@ a = sqrt(1.4*287*T_cruise);
 V_mo = 0.77*a;                          %Machnr*a
 V_Cruise = V_mo;                        %In loads, we use maximum operative speed for the structural calculations
 Cruiseweight = W_mtow;                   %Functie voor design point uit assignment gebruiken
-n_loadfactor = 2.5;
+n_loadfactor = 1;
 Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*Span_tip;                        
 meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*Span_tip-(0.5*((Chord_mid-Chord_tip)/Span_tip)*Span_tip^2)));                        %Mean aerodynamic chord?
 Re = rho* meanChord*V_Cruise/viscosity;
