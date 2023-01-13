@@ -19,8 +19,7 @@ if write_data == true
 end
 
 %Going through all disciplines for the reference aircraft
-%LD = Aerodynamics(x);
-Aerodynamics(x);
+LD = Aerodynamics(x);
 loads(x);
 [W_wing,W_fuelMax] = structures(x);
 W_endOverStart = performance(x);  %LD is directly fed into performance
