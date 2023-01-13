@@ -62,6 +62,18 @@ lb = [5                 0.5             -6    -6           0.2          12      
 lb_n = lb./x0;
 %%
 bound_diff = ub_n-lb_n;
+
+%Voor de input van fmincon moet x0 ook genormaliseerd worden. (x0/x0 dus).
+%Maar dan moet je in elke functie x wel weer vermenigvuldigen met de
+%initiele x0. 
+%idee:
+%x0_n  = x0/x0;
+% En dan x0 global maken zodat je in elke functie in het begin krijgt: 
+% global initialvalues;
+% x0 = initialvalues.x0;
+% x = x*x0;
+
+
 %show reference geometry
 showGeometry(x0);
 
