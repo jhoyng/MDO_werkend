@@ -52,7 +52,7 @@ x0_n = x0./x_0normalizing;
 
 %set this true if you want the data to be written to the data files
 global write_data
-write_data = false;
+write_data = true;
 
 %make a file to write all wanted data to from within the different
 %disciplines every iteration
