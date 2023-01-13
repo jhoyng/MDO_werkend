@@ -26,6 +26,10 @@ AlT = [-0.152238948766128;0.102651482055201;-0.333682672036304;0.114339150685438
 x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
 %x0 =[    1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30    31]; 
 
+%Overwriting x0 with last result before error
+x0 = [5.77762     0.699028            4      2.61999        0.356       14.038        19.37        -0.44 0.153529     0.114368     0.212918     0.119277    0.0696464     -0.16932   -0.0921931    -0.302734   -0.0927821    -0.108254 0.180964     0.112376      0.19925     0.144259     0.150038    -0.152239     0.102651    -0.333683     0.114339    -0.156366  42856.4      10253.6  24.3184];
+
+
 coeff_mean = 0.15;
 
 
@@ -73,7 +77,17 @@ fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Root Upper',  'Coefficients Root
 fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip Lower');
 
 
-options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
+options.Display         = 'iter-detailed';
+options.Algorithm       = 'sqp';
+options.FunValCheck     = 'off';
+options.DiffMinChange   = 1e-6;         % Minimum change while gradient searching
+options.DiffMaxChange   = 5e-2;         % Maximum change while gradient searching
+options.TolCon          = 1e-6;         % Maximum difference between two subsequent constraint vectors [c and ceq]
+options.TolFun          = 1e-6;         % Maximum difference between two subsequent objective value
+options.TolX            = 1e-6;         % Maximum difference between two subsequent design vectors
+
+options.MaxIter         = 30;           % Maximum iterations
+%options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
 [x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb_n,ub_n,@constraints,options);
 
 
