@@ -74,7 +74,7 @@ fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip L
 
 
 options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
-[x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb_n,ub_n,[],options);
+[x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb_n,ub_n,@constraints,options);
 
 
 %close data file
