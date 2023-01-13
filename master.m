@@ -64,12 +64,28 @@ lb = [5                 0.5             -6    -6           0.2          12      
 %show reference geometry
 showGeometry(x0);
 
-%make a file to write all wanted data to 
-global fid_data;
+
+%set this true if you want the data to be written to the data files
+global write_data
+write_data = true;
+
+%make a file to write all wanted data to from within the different
+%disciplines every iteration
+global fid_data
 fid_data = fopen('dataObtained.dat','wt');
-%print top row with all variables
 fprintf(fid_data, '%15s%15s%15s%15s%15s%15s\n' ,'L/D' ,'L_mean', 'M_mean', 'C_mean','W_wing', 'W_frac');
-%%
+
+%file to write the vector to every iteration without the airfoil
+%coefficients
+global fid_vector
+fid_vector = fopen('dataVector.dat','wt');
+fprintf(fid_vector, ['%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n'] ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel');
+
+%file to write the airfoil coefficients to every iteration
+global fid_coeffs
+fid_coeffs = fopen('dataCoeffs.dat','wt');
+fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Root Upper',  'Coefficients Root Lower');
+fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip Lower');
 
 %%
 global CD_nowing;

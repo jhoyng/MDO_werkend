@@ -10,7 +10,13 @@ global V_Cruise;
 W_endOverStart = exp(-R*C_T/V_Cruise*(LD^-1));
 
 %write the weight fraction on the data file
-global fid_data
-fprintf(fid_data, '%15g \n', W_endOverStart);
+global write_data
+
+
+if write_data == true
+    global fid_data
+    fprintf(fid_data, '%15g \n', W_endOverStart);
+end
+
 
 end

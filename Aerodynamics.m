@@ -93,7 +93,15 @@ toc
 CD_nowing = 0.0068;
 Aero_LD = Res.CLwing/(Res.CDwing+CD_nowing);
 
-global fid_data
-fprintf(fid_data, '%15g', Aero_LD);
+
+%write L over D on the data file
+global write_data
+
+
+if write_data == true
+    global fid_data
+    fprintf(fid_data, '%15g', Aero_LD);
+end
+
 
 end
