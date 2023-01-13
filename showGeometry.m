@@ -9,6 +9,9 @@ root_chord  =    x(1);           %[m]
 taper1       =    x(2);
 taper2       =    x(5);   
 sweep2_LE   = x(7);
+Incidence_root = x(3);
+Incidence_mid = x(4);
+Incidence_tip = x(8);
 
 sweep1_TE   =   4.60;   %set in stone
 loc_kink = sweep1_TE / span_tip;
@@ -46,16 +49,17 @@ AlM = (AlR*(1-loc_kink)+AlT*loc_kink);
 
 %Plot the 3 functions in a 3D graph
 hold on
-plot3(root_chord*XtlR(:,1),y1*ones(300,1), root_chord *XtlR(:,2),'b');    %plot lower surface coords
-plot3(root_chord*XtuR(:,1),y1*ones(300,1), root_chord *XtuR(:,2),'b');    %plot upper surface coords
-plot3(x2+mid_chord*XtlM(:,1),y2*ones(300,1), mid_chord*XtlM(:,2),'b');    %plot lower surface coords
-plot3(x2+mid_chord*XtuM(:,1),y2*ones(300,1), mid_chord*XtuM(:,2),'b');    %plot upper surface coords
-plot3(x3+tip_chord*XtlT(:,1),y3*ones(300,1), tip_chord*XtlT(:,2),'b');    %plot lower surface coords
-plot3(x3+tip_chord*XtuT(:,1),y3*ones(300,1), tip_chord*XtuT(:,2),'b');    %plot upper surface coords
-plot3([0;x2],[0;y2],[0;0], 'b');
-plot3([root_chord;x2+mid_chord],[0;y2],[0;0], 'b');
-plot3([x2;x3],[y2;y3],[0;0], 'b');
-plot3([x2+mid_chord;x3+tip_chord],[y2;y3],[0;0], 'b');
+disp(Incidence_root);
+plot3(root_chord*XtlR(:,1),y1*ones(300,1), root_chord *XtlR(:,2)-XtlR(:,1)*tan(Incidence_root*pi/180)*root_chord,'b');    %plot lower surface coords
+plot3(root_chord*XtuR(:,1),y1*ones(300,1), root_chord *XtuR(:,2)-XtlR(:,1)*tan(Incidence_root*pi/180)*root_chord,'b');    %plot upper surface coords
+plot3(x2+mid_chord*XtlM(:,1),y2*ones(300,1), z2+mid_chord*XtlM(:,2)-XtlR(:,1)*tan(Incidence_mid*pi/180)*mid_chord,'b');    %plot lower surface coords
+plot3(x2+mid_chord*XtuM(:,1),y2*ones(300,1), z2+mid_chord*XtuM(:,2)-XtlR(:,1)*tan(Incidence_mid*pi/180)*mid_chord,'b');    %plot upper surface coords
+plot3(x3+tip_chord*XtlT(:,1),y3*ones(300,1), z3+tip_chord*XtlT(:,2)-XtlR(:,1)*tan(Incidence_tip*pi/180)*tip_chord,'b');    %plot lower surface coords
+plot3(x3+tip_chord*XtuT(:,1),y3*ones(300,1), z3+tip_chord*XtuT(:,2)-XtlR(:,1)*tan(Incidence_tip*pi/180)*tip_chord,'b');    %plot upper surface coords
+plot3([0;x2],[0;y2],[0;z2], 'b');
+plot3([root_chord;x2+mid_chord],[0;y2],[-tan(Incidence_root*pi/180)*root_chord;z2-tan(Incidence_mid*pi/180)*mid_chord], 'b');
+plot3([x2;x3],[y2;y3],[z2;z3], 'b');
+plot3([x2+mid_chord;x3+tip_chord],[y2;y3],[z2-tan(Incidence_mid*pi/180)*mid_chord;z3-tan(Incidence_tip*pi/180)*tip_chord], 'b');
 
 
 view(45,45);
