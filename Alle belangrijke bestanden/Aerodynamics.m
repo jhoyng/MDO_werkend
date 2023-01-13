@@ -90,7 +90,8 @@ Res = Q3D_solver(AC);
 
 
 CD_nowing = 0.015332090837714;
-Aero_LD = Res.CLwing/(Res.CDwing+CD_nowing);
+Aero_LD = Res.CLwing/(Res.CDwing+CD_nowing); %For viscous
+%Aero_LD = Res.CLwing/(Res.CDiwing+CD_nowing); %For inviscid
 
 
 %write L over D on the data file
