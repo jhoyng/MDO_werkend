@@ -26,19 +26,28 @@ AlT = [-0.152238948766128;0.102651482055201;-0.333682672036304;0.114339150685438
 %removed Root_twist_0
 %x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
 x0 = [Rootchord_0  Taper_mid_0    Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0    AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
+x0(10:12) = x0(10:12)/2;
+x0(15:17) = x0(15:17)/2;
+x0(20:22) = x0(20:22)/2;
+x0(25:27) = x0(25:27)/2;
+
+
 %x0 =   [1             2             3               4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30]; 
 
 %removed Root_twist_0
 %start from last point
 %x0 = [3.08474          0.5     -3.64968      4.23567          0.2      6.14038      20.0165    -0.417936     0.327636     0.442008     0.472959     0.111562   -0.0123295    -0.342126    -0.423072    -0.493525    -0.241739     -0.10572     0.173443     0.112376     0.191729     0.140151    0.0965042     -0.14813     0.102651    -0.326161     0.117752   -0.0429229      6991.39      4844.71      22.5829];
-x0 = [3.08474          0.5      4.23567          0.2      6.14038      20.0165    -0.417936     0.327636     0.442008     0.472959     0.111562   -0.0123295    -0.342126    -0.423072    -0.493525    -0.241739     -0.10572     0.173443     0.112376     0.191729     0.140151    0.0965042     -0.14813     0.102651    -0.326161     0.117752   -0.0429229      6991.39      4844.71      22.5829];
+%x0 = [3.08474          0.5      4.23567          0.2      6.14038      20.0165    -0.417936     0.327636     0.442008     0.472959     0.111562   -0.0123295    -0.342126    -0.423072    -0.493525    -0.241739     -0.10572     0.173443     0.112376     0.191729     0.140151    0.0965042     -0.14813     0.102651    -0.326161     0.117752   -0.0429229      6991.39      4844.71      22.5829];
 %x0 =   [1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30    31]; 
 
 %Overwriting x0 with last result before error
 %x0 = [5.77762     0.699028            4      2.61999        0.356       14.038        19.37        -0.44 0.153529     0.114368     0.212918     0.119277    0.0696464     -0.16932   -0.0921931    -0.302734   -0.0927821    -0.108254 0.180964     0.112376      0.19925     0.144259     0.150038    -0.152239     0.102651    -0.333683     0.114339    -0.156366  42856.4      10253.6  24.3184];
 
 
-coeff_mean = 0.15;
+%x0 after converged inviscid analysis:
+%x0 = [3     0.501896            6     0.350401           16           10        -0.44     0.382615     0.468861     0.473597      0.32561    -0.478287    -0.382844    -0.496927    -0.494673    -0.373377     0.375517     0.327627     0.286618     0.367932      0.30702    -0.378023    -0.152239     0.278485    -0.333683     0.281994     0.479095      37718.8      6072.37      18.7466];
+
+coeff_mean = 0.01;
 
 
 global x_0normalizing
@@ -100,13 +109,13 @@ fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip L
 options.Display         = 'iter';
 options.Algorithm       = 'sqp';
 options.FunValCheck     = 'off';
-options.PlotFcn = {@optimplotfval, @optimplotx, @optimplotfirstorderopt, @optimplotconstrviolation, @optimplotfunccount, @optimplotstepsize};
+options.PlotFcns = {@optimplotfval, @optimplotx, @optimplotfirstorderopt, @optimplotconstrviolation, @optimplotfunccount, @optimplotstepsize};
 options.DiffMinChange   = 1e-2;         % Minimum change while gradient searching
 options.DiffMaxChange   = 1e-1;         % Maximum change while gradient searching
 options.TolCon          = 1e-3;         % Maximum difference between two subsequent constraint vectors [c and ceq]
 options.TolFun          = 1e-3;         % Maximum difference between two subsequent objective value
 options.TolX            = 1e-10;         % Maximum difference between two subsequent design vectors
-
+%options.FinDiffType = 'central';
 options.MaxIter         = 30;           % Maximum iterations
 %options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
 [x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb_n,ub_n,@constraints,options);

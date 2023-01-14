@@ -55,7 +55,7 @@ AC.Wing.Airfoils   =    [x(8)    x(9)    x(10)    x(11)    x(12)        x(13)   
 AC.Wing.eta = [0;1];                    % Spanwise location of the airfoil sections
 
 % Viscous vs inviscid
-AC.Visc  = 0;                           % 0 for inviscid and 1 for viscous analysis
+AC.Visc  = 1;                           % 0 for inviscid and 1 for viscous analysis
 AC.Aero.MaxIterIndex = 150;             %Maximum number of Iteration for the
                                         %convergence of viscous calculation
 global V_Cruise;
@@ -93,8 +93,8 @@ CD_nowing = 0.015332090837714;
 D_nowing = 1.289699415340686e+04;
 dynpres = 0.5*rho*V_Cruise^2;
 Aero_L = Res.CLwing*dynpres*Wingarea;
-%Aero_D = (Res.CDwing*dynpres*Wingarea)+D_nowing; %for viscous
-Aero_D = (Res.CDiwing*dynpres*Wingarea)+D_nowing; %for inviscid
+Aero_D = (Res.CDwing*dynpres*Wingarea)+D_nowing; %for viscous
+%Aero_D = (Res.CDiwing*dynpres*Wingarea)+D_nowing; %for inviscid
 Aero_LD = Aero_L/Aero_D;
 
 
