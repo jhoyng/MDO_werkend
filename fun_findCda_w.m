@@ -1,6 +1,6 @@
-function [CD_nowing] = fun_findCda_w(x)
-global x_0normalizing
-x = x.*x_0normalizing;
+function [CD_nowing, D_nowing] = fun_findCda_w(x)
+%global x_0normalizing
+%x = x.*x_0normalizing;
 %from design vector
 Chord_root = x(1);
 Taper_mid = x(2) ;
@@ -95,5 +95,7 @@ toc
 %doesnt output load but outputs only Cl. This first has to be multiplied by
 %the root and q in order to resemble the load so for now it is still wrong.
 CD_nowing = (Res.CLwing/CruiseLD)-Res.CDwing; % Value CD_nowing = 0.0068
+S_refwing = Wingarea;
+D_nowing = 0.5*rho*(V_Cruise^2)*CD_nowing*S_refwing; %Value D_nowing = 1.289699415340686e+04
 
 end
