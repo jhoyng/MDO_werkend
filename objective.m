@@ -19,7 +19,7 @@ if write_data == true
     global lb
     fid_bounds = fopen('dataBounds.dat','wt');
     %fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
-    fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M','twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
+    fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M','twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
     %fprintf(fid_bounds, '%13g' , [ub(1:8) ub(29:31)]);
     fprintf(fid_bounds, '%13g' , [ub(1:7) ub(28:30)]);
     fprintf(fid_bounds, '\n');

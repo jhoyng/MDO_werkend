@@ -10,9 +10,9 @@ Mid_twist_0 = 2.62;
 Tip_twist_0 = -0.44;    
 Tip_span_0 = 14.038 ;
 LE_sweep_tip_0 = 19.37 ;
-W_mtow_0 =  43090-5696.73;       %[kg]
-W_fuel_0 = 13365*0.81715-5696.73;       %[m^3]*[kg/m^3] = [kg]
-LD_0 = 16+8.1744;
+W_mtow_0 =  43090-5696.73/2;       %[kg]
+W_fuel_0 = 13365*0.81715-5696.73/2;       %[m^3]*[kg/m^3] = [kg]
+LD_0 = 16-6/2;
 
 %Defign the root and tip airfoil
 %e553
@@ -30,7 +30,7 @@ x0(10:12) = x0(10:12)/2;
 x0(15:17) = x0(15:17)/2;
 x0(20:22) = x0(20:22)/2;
 x0(25:27) = x0(25:27)/2;
-
+%x0 = [4.08419       0.9097        4.986       0.4568       8.4114       12.811    -0.434539     0.116059     0.176518      0.21999     0.122194    0.0625024    -0.122534   -0.0415093    -0.118691   0.00169831    -0.115516     0.124289     0.137115     0.133979    0.0809317     0.200398    -0.124438     0.102656    -0.142245    0.0489701   -0.0535772      36445.6      4627.59      28.2523];
 
 %x0 =   [1             2             3               4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30]; 
 
@@ -58,11 +58,11 @@ global lb
 %Creating bounds for the design variables
 %Upper bounds
 %ub = [Rootchord_0  Taper_mid_0  Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0   AuR(1)    AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-ub = [6.5                1          6             0.5         16          25              4           0.4       0.5      0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5    0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5   50000     15000    30];
+ub = [6.5                1          4             0.5         17          20              4          AuR(1)+0.2    AuR(2)+0.2  AuR(3)+0.2  AuR(4)+0.2  AuR(5)+0.2  -0.1  AlR(2)+0.2  AlR(3)+0.2  AlR(4)+0.2  AlR(5)+0.2  AuT(1)+0.2  AuT(2)+0.2  AuT(3)+0.2  AuT(4)+0.2  AuT(5)+0.2  -0.1  AlT(2)+0.2  AlT(3)+0.2  AlT(4)+0.2  AlT(5)+0.2   50000      50000     50000];
 ub_n = ub./x_0normalizing;
 %Lower bounds
 %lb = [Rootchord_0  Taper_mid_0   Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)   n AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-lb = [3                 0.5           -6           0.2          6          10              -4          0.1      -0.5   -0.5   -0.5     -0.5    -0.4    -0.5    -0.5    -0.5    -0.5   0.1      -0.5  -0.5   -0.5     -0.5    -0.4     -0.5    -0.5    -0.5    -0.5   1000     500    6];
+lb = [3                 0.5           -1           0.30          10          10              -1          0.1   AuR(2)-0.2  AuR(3)-0.2  AuR(4)-0.2  AuR(5)-0.2  AlR(1)-0.2  AlR(2)-0.2  AlR(3)-0.2  AlR(4)-0.2  AlR(5)-0.2  0.1  AuT(2)-0.2  AuT(3)-0.2  AuT(4)-0.2  AuT(5)-0.2  AlT(1)-0.2  AlT(2)-0.2  AlT(3)-0.2  AlT(4)-0.2  AlT(5)-0.2   0     0    0];
 lb_n = lb./x_0normalizing;
 %%
 bounddiff = ub_n-lb_n;
@@ -87,7 +87,7 @@ fprintf(fid_data, '%15s%15s%15s%15s%15s%15s%15s%15s%15s%15s\n' ,'L/D' ,'L_mean',
 %coefficients
 global fid_vector
 fid_vector = fopen('dataVector.dat','wt');
-fprintf(fid_vector, '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
+fprintf(fid_vector, '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
 
 %file to write the vector to every iteration
 global fid_fullVector
