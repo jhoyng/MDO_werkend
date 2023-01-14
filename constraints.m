@@ -4,11 +4,13 @@ x = x.*x_0normalizing;
 %Global parameters
 global couplings;
 LD = couplings.LD;
+Wingarea = couplings.Wingarea;
 W_fuelMax = couplings.W_fuelMax;
 MTOW = couplings.MTOW;
 W_a_w = 3.110115025000000e+04;  %Nader in te vullen
 W_wing = couplings.W_wing;
 W_endOverStart = couplings.W_endOverStart;
+Wingloading_ref = 3.923293889839573e+03;
 
 %W_fuel_0 = x(30);
 %LD = x(31);
@@ -19,11 +21,12 @@ cc2 = (LD - x(30));         %Constraint that LD of x0 equals output of aerodynam
 cc3 = (MTOW - x(28));       %Constraint that MTOW of x0 equals that of the objective function
 
 c1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - W_fuelMax);  %Contraint that the required fuel is less than the maximum capacity
+c2 = Wingarea/MTOW - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft
 
 % c = [c1];
 % ceq = [cc1,cc2,cc3];
 
-c = [c1/x_0normalizing(29)];
+c = [c1/x_0normalizing(29), c2/Wingloading_ref];
 ceq = [cc1/x_0normalizing(29),cc2/x_0normalizing(30),cc3/x_0normalizing(28)];
 
 %write the weight fraction on the data file
