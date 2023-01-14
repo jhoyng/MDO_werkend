@@ -1,28 +1,6 @@
 
 clear all;
 close all;
-
-
-%Create initial values for design vector x0
-
-%Create bounds for all variables in design vector ub, lb
-
-%Settings for fmincon
-
-%fmincon
-
-
-% % namefile    =    char('Fokke100');
-% MTOW        =    43090;         %[kg]
-% MZF         =    35830;         %[kg]
-% nz_max      =    2.5;   
-% span        =    28.076;            %[m]
-% root_chord =    5.78;           %[m]
-% taper1       =    0.699;
-% taper2       =    0.249;   
-% sweep2_LE = 19.37;
-
-sweep1_TE   =   4.60;  %Deze kan weg toch?
 %Initial values of design vector
 Rootchord_0 = 5.78 ;
 Taper_mid_0 = 0.699;
@@ -32,10 +10,9 @@ Mid_twist_0 = 2.62;
 Tip_twist_0 = -0.44;    
 Tip_span_0 = 14.038 ;
 LE_sweep_tip_0 = 19.37 ;
-W_mtow_0 =  43090;         %[kg]
-W_zerofuel =  35830;         %[kg]  %Deze kan weg toch?
-W_fuel_0 = 13365*0.81715;           %[m^3]*[kg/m^3] = [kg]
-LD_0 = 16;
+W_mtow_0 =  43090-5696.73;       %[kg]
+W_fuel_0 = 13365*0.81715-5696.73;       %[m^3]*[kg/m^3] = [kg]
+LD_0 = 16+8.1744;
 
 %Defign the root and tip airfoil
 %e553
@@ -46,24 +23,40 @@ AlR = [-0.169319963986527;-0.092193075229581;-0.302733614226347;-0.0927820852317
 AuT =[0.180964236453140;0.112375548755489;0.199250369688744;0.144259294381080;0.150037563263751];
 AlT = [-0.152238948766128;0.102651482055201;-0.333682672036304;0.114339150685438;-0.156366477902652];
 
-
-
 x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-%x0 =[    1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30    31]; 
 
+%start from last point
+x0 = [3.08474          0.5     -3.64968      4.23567          0.2      6.14038      20.0165    -0.417936     0.327636     0.442008     0.472959     0.111562   -0.0123295    -0.342126    -0.423072    -0.493525    -0.241739     -0.10572     0.173443     0.112376     0.191729     0.140151    0.0965042     -0.14813     0.102651    -0.326161     0.117752   -0.0429229      6991.39      4844.71      22.5829];
+%x0 =   [1             2           3              4          5            6              7             8        9       10      11      12      13      14      15      16      17      18      19      20     21       22      23      24      25      26      27     28        29      30    31]; 
+
+%Overwriting x0 with last result before error
+%x0 = [5.77762     0.699028            4      2.61999        0.356       14.038        19.37        -0.44 0.153529     0.114368     0.212918     0.119277    0.0696464     -0.16932   -0.0921931    -0.302734   -0.0927821    -0.108254 0.180964     0.112376      0.19925     0.144259     0.150038    -0.152239     0.102651    -0.333683     0.114339    -0.156366  42856.4      10253.6  24.3184];
+
+
+coeff_mean = 0.15;
+
+
+global x_0normalizing
+x_0normalizing = abs([x0(1:8)  coeff_mean*ones(1,20)  x0(29:31)]);
+
+global ub
+global lb
 %Creating bounds for the design variables
 %Upper bounds
 %ub = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-ub = [6.5                1            6       6             0.5         16          25              4           0.5       0.5    0.5    0.5      0.5     0.5     0.5     0.5     0.5     0.5    0.5       0.5    0.5    0.5      0.5     0.5     0.5     0.5     0.5     0.5   50000     20000    30];
-ub_n = ub./x0;
+ub = [6.5                1            6       6             0.5         16          25              4           0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5    0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5   50000     15000    30];
+ub_n = ub./x_0normalizing;
 %Lower bounds
 %lb = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-lb = [5                 0.5             -6    -6           0.2          12          10              -4          -0.5      -0.5   -0.5   -0.5     -0.5    -0.5    -0.5    -0.5    -0.5    -0.5   -0.5      -0.5  -0.5   -0.5     -0.5    -0.5     -0.5    -0.5    -0.5    -0.5   30000     10000    6];
-lb_n = lb./x0;
+lb = [3                 0.5             -6    -6           0.2          6          10              -4          0.1      -0.5   -0.5   -0.5     -0.5    -0.4    -0.5    -0.5    -0.5    -0.5   0.1      -0.5  -0.5   -0.5     -0.5    -0.4     -0.5    -0.5    -0.5    -0.5   1000     500    6];
+lb_n = lb./x_0normalizing;
 %%
-bound_diff = ub_n-lb_n;
+bounddiff = ub_n-lb_n;
+%Normalized x0 vector
+x0_n = x0./x_0normalizing;
+
 %show reference geometry
-showGeometry(x0);
+%showGeometry(x0_n);
 
 
 %set this true if you want the data to be written to the data files
@@ -74,13 +67,23 @@ write_data = true;
 %disciplines every iteration
 global fid_data
 fid_data = fopen('dataObtained.dat','wt');
-fprintf(fid_data, '%15s%15s%15s%15s%15s%15s\n' ,'L/D' ,'L_mean', 'M_mean', 'C_mean','W_wing', 'W_frac');
+fprintf(fid_data, '%15s%15s%15s%15s%15s%15s%15s%15s%15s%15s\n' ,'L/D' ,'L_mean', 'M_mean', 'C_mean','W_wing', 'W_frac','c1','cc1','cc2','cc3');
 
 %file to write the vector to every iteration without the airfoil
 %coefficients
 global fid_vector
 fid_vector = fopen('dataVector.dat','wt');
-fprintf(fid_vector, ['%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n'] ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel');
+fprintf(fid_vector, '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
+
+%file to write the vector to every iteration
+global fid_fullVector
+fid_fullVector = fopen('dataFullVector.dat','wt');
+fprintf(fid_fullVector, '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip','Root Upper','', '',  '',   '',  'Root Lower',   '',   '',   '',   '',   'Tip Upper',  '',   '',   '',   '',   'Tip Lower',   '',  '',   '',   '',  'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel');
+
+%write file to store bounds and current iteration
+
+
+
 
 %file to write the airfoil coefficients to every iteration
 global fid_coeffs
@@ -88,16 +91,25 @@ fid_coeffs = fopen('dataCoeffs.dat','wt');
 fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Root Upper',  'Coefficients Root Lower');
 fprintf(fid_coeffs, '%65s%65s\n' ,'Coefficients Tip Upper',  'Coefficients Tip Lower');
 
-%%
-global CD_nowing;
-global W_nowing;
-CD_nowing = fun_findCda_w(x0);
-W_nowing = fun_findW_AW(x0);
-%%
 
-options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
-[x_upper,fval,exitflag,output] = fmincon(@objective,x0,[],[],[],[],lb,ub,[],options);
+options.Display         = 'iter';
+options.Algorithm       = 'sqp';
+options.FunValCheck     = 'off';
+options.PlotFcn = {@optimplotfval, @optimplotx, @optimplotfirstorderopt, @optimplotconstrviolation, @optimplotfunccount, @optimplotstepsize};
+options.DiffMinChange   = 1e-2;         % Minimum change while gradient searching
+options.DiffMaxChange   = 1e-1;         % Maximum change while gradient searching
+options.TolCon          = 1e-3;         % Maximum difference between two subsequent constraint vectors [c and ceq]
+options.TolFun          = 1e-3;         % Maximum difference between two subsequent objective value
+options.TolX            = 1e-10;         % Maximum difference between two subsequent design vectors
+
+options.MaxIter         = 30;           % Maximum iterations
+%options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
+[x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb_n,ub_n,@constraints,options);
 
 
 %close data file
+fclose(fileID);
+fclose(fid_coeffs);
+fclose(fid_fullVector);
+fclose(fid_vector);
 fclose(fid_data);

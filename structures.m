@@ -1,4 +1,6 @@
 function [W_strWing,W_fmax] = structures(x)
+% global x_0normalizing
+% x = x.*x_0normalizing;
 
 
 %incidence angle toevoegen , mzf wordt fuel weight
@@ -62,9 +64,9 @@ fprintf(fid, '%g %g %g %g \n',E_al,rho_al,Ft_al,Fc_al);
 fprintf(fid, '%g %g %g %g \n',E_al,rho_al,Ft_al,Fc_al);
 fprintf(fid, '%g %g %g %g \n',E_al,rho_al,Ft_al,Fc_al);
 
-fprintf(fid,'%g %g \n',eff_factor,pitch_rib)
-fprintf(fid,'1 \n')
-fclose(fid)
+fprintf(fid,'%g %g \n',eff_factor,pitch_rib);
+fprintf(fid,'0 \n');
+fclose(fid);
 
 EMWET Fokker100
 %%
@@ -75,7 +77,10 @@ formatSpec = '%s';
 A = textscan(fileID,formatSpec,'Delimiter','\n');
 fclose(fileID);
 
-W_strWing = str2double(A{1,1}{1,1}(23:29));
+W_strWing = str2double(A{1,1}{1,1}(23:end));
+W_fuel = MTOW - MZF;
+
+W_AW = MTOW - W_fuel - W_strWing;
 
 
 loc_kink = sweep1_TE / span_tip;
@@ -131,7 +136,6 @@ A85 = (1-frac2_85/frac2_3)*A2+frac2_85/frac2_3*A3;
 v_f2 = frac2_85*span_tip*(A2+A85)/2;
 v_f = (v_f2+v_f1)*0.93;
 W_fmax = v_f*0.81715e3*2;
-v_ftotalLitres = v_f*1000*0.93;
 
 
 %write wing weight on the data file

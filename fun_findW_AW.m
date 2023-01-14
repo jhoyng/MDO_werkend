@@ -1,4 +1,6 @@
 function [W_AW] = fun_findW_AW(x)
+global x_0normalizing
+x = x.*x_0normalizing;
 %incidence angle toevoegen , mzf wordt fuel weight
 
 MTOW        =    x(29);         %[kg]
