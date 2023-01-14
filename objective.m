@@ -9,6 +9,10 @@ if write_data == true
     fprintf(fid_vector, '%13g' , [x(1:8) x(29:30)]);
     fprintf(fid_vector, '\n');
     
+    global fid_fullVector
+    fprintf(fid_fullVector, '%13g' , x(:));
+    fprintf(fid_fullVector, '\n');
+
     global fid_coeffs;
     fprintf(fid_coeffs, '\n');
     fprintf(fid_coeffs, '%13g' , x(9:18));
