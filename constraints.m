@@ -80,7 +80,7 @@ c2 = Wingarea/MTOW - Wingloading_ref ; %Constraint forcing the wing loading not 
 % ceq = [cc1,cc2,cc3];
 
 c = [c1/x_0normalizing(29), c2/Wingloading_ref];
-ceq = [cc1/x_0normalizing(29),cc2/x_0normalizing(30),cc3/x_0normalizing(28)];
+ceq = [cc1/x_0normalizing(29),cc2/x_0normalizing(30),cc3/x_0normalizing(28), cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13, cc14];
 
 %write the weight fraction on the data file
 global write_data
@@ -88,7 +88,7 @@ global write_data
 
 if write_data == true
     global fid_data
-    fprintf(fid_data, '%15g', c1 ,cc1,cc2,cc3);
+    fprintf(fid_data, '%15g', c1 ,cc1,cc2,cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13, cc14);
     fprintf(fid_data, '\n');
 end
 
