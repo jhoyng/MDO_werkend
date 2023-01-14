@@ -90,7 +90,7 @@ Res = Q3D_solver(AC);
 
 
 CD_nowing = 0.015332090837714;
-D_nowing = 1.289699415340686e+04;
+D_nowing = 1.187161243929044e+04;
 dynpres = 0.5*rho*V_Cruise^2;
 Aero_L = Res.CLwing*dynpres*Wingarea;
 Aero_D = (Res.CDwing*dynpres*Wingarea)+D_nowing; %for viscous
