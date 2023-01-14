@@ -5,14 +5,14 @@ function [W_strWing,W_fmax] = structures(x)
 
 %incidence angle toevoegen , mzf wordt fuel weight
 
-MTOW        =    x(29);         %[kg]
-MZF         =    x(29)- x(30);         %[kg]
+MTOW        =    x(28);         %[kg]
+MZF         =    x(28)- x(29);         %[kg]
 nz_max      =    2.5;   
-span_tip    =    x(6);            %[m]
+span_tip    =    x(5);            %[m]
 root_chord  =    x(1);           %[m]
 taper1       =    x(2);
-taper2       =    x(5);   
-sweep2_LE = x(7);
+taper2       =    x(4);   
+sweep2_LE = x(6);
 
 sweep1_TE   =   4.60;   %set in stone
 y1 = 0;
@@ -88,10 +88,10 @@ chord1 = root_chord;
 chord2 = root_chord*taper1;
 chord3 = root_chord*taper1*taper2;
 
-AuR = [x(9)    x(10)    x(11)    x(12)    x(13)]; 
-AlR = [x(14)   x(15)   x(16)   x(17)    x(18)];
-AuT = [x(19)   x(20)    x(21)    x(22)    x(23)];
-AlT = [x(24)   x(25)   x(26)   x(27)    x(28)];
+AuR = [x(8)    x(9)    x(10)    x(11)    x(12)]; 
+AlR = [x(13)   x(14)   x(15)   x(16)    x(17)];
+AuT = [x(18)   x(19)    x(20)    x(21)    x(22)];
+AlT = [x(23)   x(24)   x(25)   x(26)    x(27)];
 
 AuM = (AuR*(1-loc_kink)+AuT*loc_kink);
 AlM = (AlR*(1-loc_kink)+AlT*loc_kink);

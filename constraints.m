@@ -14,17 +14,17 @@ W_endOverStart = couplings.W_endOverStart;
 %LD = x(31);
 %W_mtow_0 = x(29);
 
-cc1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - x(30));        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
-cc2 = (LD - x(31));         %Constraint that LD of x0 equals output of aerodynamics
-cc3 = (MTOW - x(29));       %Constraint that MTOW of x0 equals that of the objective function
+cc1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - x(29));        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
+cc2 = (LD - x(30));         %Constraint that LD of x0 equals output of aerodynamics
+cc3 = (MTOW - x(28));       %Constraint that MTOW of x0 equals that of the objective function
 
 c1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - W_fuelMax);  %Contraint that the required fuel is less than the maximum capacity
 
 % c = [c1];
 % ceq = [cc1,cc2,cc3];
 
-c = [c1/x_0normalizing(30)];
-ceq = [cc1/x_0normalizing(30),cc2/x_0normalizing(31),cc3/x_0normalizing(29)];
+c = [c1/x_0normalizing(29)];
+ceq = [cc1/x_0normalizing(29),cc2/x_0normalizing(30),cc3/x_0normalizing(28)];
 
 %write the weight fraction on the data file
 global write_data

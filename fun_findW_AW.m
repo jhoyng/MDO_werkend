@@ -3,14 +3,14 @@ global x_0normalizing
 x = x.*x_0normalizing;
 %incidence angle toevoegen , mzf wordt fuel weight
 
-MTOW        =    x(29);         %[kg]
-MZF         =    x(29)- x(30);         %[kg]
+MTOW        =    x(28);         %[kg]
+MZF         =    x(28)- x(29);         %[kg]
 nz_max      =    2.5;   
-span_tip    =    x(6);            %[m]
+span_tip    =    x(5);            %[m]
 root_chord  =    x(1);           %[m]
 taper1       =    x(2);
-taper2       =    x(5);   
-sweep2_LE = x(7);
+taper2       =    x(4);   
+sweep2_LE = x(6);
 
 sweep1_TE   =   4.60;   %set in stone
 y1 = 0;

@@ -7,7 +7,7 @@ W_nowing = 3.110115025000000e+04;
 global write_data;
 if write_data == true
     global fid_vector;
-    fprintf(fid_vector, '%13g' , [x(1:8) x(29:31)]);
+    fprintf(fid_vector, '%13g' , [x(1:7) x(28:30)]); %fprintf(fid_vector, '%13g' , [x(1:8) x(29:31)]);
     fprintf(fid_vector, '\n');
     
     global fid_fullVector
@@ -18,19 +18,25 @@ if write_data == true
     global ub
     global lb
     fid_bounds = fopen('dataBounds.dat','wt');
-    fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
-    fprintf(fid_bounds, '%13g' , [ub(1:8) ub(29:31)]);
+    %fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
+    fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M','twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
+    %fprintf(fid_bounds, '%13g' , [ub(1:8) ub(29:31)]);
+    fprintf(fid_bounds, '%13g' , [ub(1:7) ub(28:30)]);
     fprintf(fid_bounds, '\n');
-    fprintf(fid_bounds, '%13g' , [x(1:8) x(29:31)]);
+    %fprintf(fid_bounds, '%13g' , [x(1:8) x(29:31)]);
+    fprintf(fid_bounds, '%13g' , [x(1:7) x(28:30)]);
     fprintf(fid_bounds, '\n');
-    fprintf(fid_bounds, '%13g' , [lb(1:8) lb(29:31)]);
+    %fprintf(fid_bounds, '%13g' , [lb(1:8) lb(29:31)]);
+    fprintf(fid_bounds, '%13g' , [lb(1:7) lb(28:30)]);
     fclose(fid_bounds);
 
     global fid_coeffs;
     fprintf(fid_coeffs, '\n');
-    fprintf(fid_coeffs, '%13g' , x(9:18));
+    %fprintf(fid_coeffs, '%13g' , x(9:18));
+    fprintf(fid_coeffs, '%13g' , x(8:17));
     fprintf(fid_coeffs, '\n');
-    fprintf(fid_coeffs, '%13g' , x(19:28));
+    %fprintf(fid_coeffs, '%13g' , x(19:28));
+    fprintf(fid_coeffs, '%13g' , x(18:27));
     fprintf(fid_coeffs, '\n\n');
 end
 
@@ -41,8 +47,7 @@ loads(x);
 W_endOverStart = performance(x);  %LD is directly fed into performance
 
 %objective function
-MTOW_abs = (W_nowing+W_wing)/(0.938*W_endOverStart);
-MTOW = MTOW_abs/x_0normalizing(29);
+MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);
 
 global couplings;
 couplings.LD = LD;

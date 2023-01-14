@@ -2,7 +2,7 @@ function [W_endOverStart] = performance(x)
 % global x_0normalizing
 % x = x.*x_0normalizing;
 
-LD = x(31);
+LD = x(30);
 
 C_T =  1.8639e-4;   %[1/s]  
 R = 2389.080e3;     %[meter]

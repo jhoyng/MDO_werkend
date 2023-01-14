@@ -2,17 +2,17 @@ function showGeometry(x,x0)
 % global x_0normalizing
 % x = x.*x_0normalizing;
 
-MTOW        =    x(29);         %[kg]
-MZF         =    x(29)- x(30);         %[kg]
+MTOW        =    x(28);         %[kg]
+MZF         =    x(28)- x(29);         %[kg]
 nz_max      =    2.5;   
-span_tip    =    x(6);            %[m]
+span_tip    =    x(5);            %[m]
 root_chord  =    x(1);           %[m]
 taper1       =    x(2);
-taper2       =    x(5);   
-sweep2_LE   = x(7);
-Incidence_root = x(3);
-Incidence_mid = x(4);
-Incidence_tip = x(8);
+taper2       =    x(4);   
+sweep2_LE   = x(6);
+Incidence_root = 4; %x(3);
+Incidence_mid = x(3);
+Incidence_tip = x(7);
 
 sweep1_TE   =   4.60;   %set in stone
 loc_kink = sweep1_TE / span_tip;
@@ -33,10 +33,10 @@ tip_chord = mid_chord * taper2;
 
 %%
 
-AuR = [x(9)    x(10)    x(11)    x(12)    x(13)]; 
-AlR = [x(14)   x(15)   x(16)   x(17)    x(18)];
-AuT = [x(19)   x(20)    x(21)    x(22)    x(23)];
-AlT = [x(24)   x(25)   x(26)   x(27)    x(28)];
+AuR = [x(8)    x(9)    x(10)    x(11)    x(12)]; 
+AlR = [x(13)   x(14)   x(15)   x(16)    x(17)];
+AuT = [x(18)   x(19)    x(20)    x(21)    x(22)];
+AlT = [x(23)   x(24)   x(25)   x(26)    x(27)];
 
 
 AuM = (AuR*(1-loc_kink)+AuT*loc_kink);
@@ -63,17 +63,17 @@ plot3([x2;x3],[y2;y3],[z2;z3], 'r');
 plot3([x2+mid_chord;x3+tip_chord],[y2;y3],[z2-tan(Incidence_mid*pi/180)*mid_chord;z3-tan(Incidence_tip*pi/180)*tip_chord], 'r');
 
 
-MTOW        =    x0(29);         %[kg]
-MZF         =    x0(29)- x0(30);         %[kg]
+MTOW        =    x0(28);         %[kg]
+MZF         =    x0(28)- x0(29);         %[kg]
 nz_max      =    2.5;   
-span_tip    =    x0(6);            %[m]
+span_tip    =    x0(5);            %[m]
 root_chord  =    x0(1);           %[m]
 taper1       =    x0(2);
-taper2       =    x0(5);   
-sweep2_LE   = x0(7);
-Incidence_root = x0(3);
-Incidence_mid = x0(4);
-Incidence_tip = x0(8);
+taper2       =    x0(4);   
+sweep2_LE   = x0(6);
+Incidence_root = 4; %x0(3);
+Incidence_mid = x0(3);
+Incidence_tip = x0(7);
 
 sweep1_TE   =   4.60;   %set in stone
 loc_kink = sweep1_TE / span_tip;
@@ -94,10 +94,10 @@ tip_chord = mid_chord * taper2;
 
 %%
 
-AuR = [x0(9)    x0(10)    x0(11)    x0(12)    x0(13)]; 
-AlR = [x0(14)   x0(15)   x0(16)   x0(17)    x0(18)];
-AuT = [x0(19)   x0(20)    x0(21)    x0(22)    x0(23)];
-AlT = [x0(24)   x0(25)   x0(26)   x0(27)    x0(28)];
+AuR = [x0(8)    x0(9)    x0(10)    x0(11)    x0(12)]; 
+AlR = [x0(13)   x0(14)   x0(15)   x0(16)    x0(17)];
+AuT = [x0(18)   x0(19)    x0(20)    x0(21)    x0(22)];
+AlT = [x0(23)   x0(24)   x0(25)   x0(26)    x0(27)];
 
 
 AuM = (AuR*(1-loc_kink)+AuT*loc_kink);
