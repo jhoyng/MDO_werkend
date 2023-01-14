@@ -123,7 +123,7 @@ plot3([root_chord;x2+mid_chord],[0;y2],[-tan(Incidence_root*pi/180)*root_chord;z
 plot3([x2;x3],[y2;y3],[z2;z3], 'b');
 plot3([x2+mid_chord;x3+tip_chord],[y2;y3],[z2-tan(Incidence_mid*pi/180)*mid_chord;z3-tan(Incidence_tip*pi/180)*tip_chord], 'b');
 
-view(45,45);
+view(90,90);
 
 %Set x,y,z axis labels
 xlabel('x Axis')
