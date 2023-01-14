@@ -62,7 +62,7 @@ ub = [6.5                1          4             0.5         17          20    
 ub_n = ub./x_0normalizing;
 %Lower bounds
 %lb = [Rootchord_0  Taper_mid_0   Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)   n AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-lb = [3                 0.5           -1           0.30          10          10              -1          0.1   AuR(2)-0.2  AuR(3)-0.2  AuR(4)-0.2  AuR(5)-0.2  AlR(1)-0.2  AlR(2)-0.2  AlR(3)-0.2  AlR(4)-0.2  AlR(5)-0.2  0.1  AuT(2)-0.2  AuT(3)-0.2  AuT(4)-0.2  AuT(5)-0.2  AlT(1)-0.2  AlT(2)-0.2  AlT(3)-0.2  AlT(4)-0.2  AlT(5)-0.2   0     0    0];
+lb = [4                 0.6           -1           0.30          10          10              -1          0.1   AuR(2)-0.2  AuR(3)-0.2  AuR(4)-0.2  AuR(5)-0.2  AlR(1)-0.2  AlR(2)-0.2  AlR(3)-0.2  AlR(4)-0.2  AlR(5)-0.2  0.1  AuT(2)-0.2  AuT(3)-0.2  AuT(4)-0.2  AuT(5)-0.2  AlT(1)-0.2  AlT(2)-0.2  AlT(3)-0.2  AlT(4)-0.2  AlT(5)-0.2   0     0    0];
 lb_n = lb./x_0normalizing;
 %%
 bounddiff = ub_n-lb_n;
