@@ -55,23 +55,25 @@ cc2 = (LD - x(30));         %Constraint that LD of x0 equals output of aerodynam
 cc3 = (MTOW - x(28));       %Constraint that MTOW of x0 equals that of the objective function
 
 %Constraints that keep Upper CST coefs higher than lower CST coefs
-%root
-cc4 = x(13) - x(8);
-cc5 = x(14) - x(9);
-cc6 = x(15) - x(10);
-cc7 = x(16) - x(11);
-cc8 = x(17) - x(12);
+%root Margin 
+cc4 = x(13) + 0.13 - x(8); %0.13
+cc5 = x(14) + 0.13 - x(9); %0.13
+cc6 = x(15) + 0.13 - x(10); %0.13
+cc7 = x(16) + 0.13 - x(11); %0.13
+cc8 = x(17) + 0.013 - x(12); %0.013
 %tip
-cc9 = x(23) - x(18);
-cc10 = x(24) - x(19);
-cc11 = x(25) - x(20);
-cc12 = x(26) - x(21);
-cc13 = x(27) - x(22);
+cc9 = x(23) + 0.13 - x(18); %0.13
+cc10 = x(24) + 0.13 - x(19); %0.13
+cc11 = x(25) + 0.13 - x(20); %0.13
+cc12 = x(26) + 0.13 - x(21); %0.13
+cc13 = x(27) + 0.013 - x(22); %0.13
 
 %Constraint that makes sure the sweep of the tip section is at least equal
 %to that of the mid section
 %SweepTETIP = atan(((x_mid+Chord_mid)-(x_root+Chord_root))/(y_mid-y_root));
-cc14 = (atan(((x_tip+Chord_tip)-(x_mid+Chord_mid))/(y_tip-y_mid))) - (4.60*pi/180);
+%Margin of 3 deg added to constraint and added a weight of 20 to the
+%constraint
+cc14 = ((4.60*pi/180) + (3*pi/180)- (atan(((x_tip+Chord_tip)-(x_mid+Chord_mid))/(y_tip-y_mid))))*20;
 
 c1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - W_fuelMax);  %Contraint that the required fuel is less than the maximum capacity
 c2 = Wingarea/MTOW - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft
