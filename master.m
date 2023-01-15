@@ -58,11 +58,11 @@ global lb
 %Creating bounds for the design variables
 %Upper bounds
 %ub = [Rootchord_0  Taper_mid_0  Mid_twist_0  Taper_tip_0  Tip_span_0  kinkAngle_0 Tip_twist_0   AuR(1)    AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
-ub = [6.5                0.9           4              0.5         16          15              3             AuR(1)+0.2              AuR(2)+0.2  AuR(3)+0.2  AuR(4)+0.2  AuR(5)+0.2  -0.1  AlR(2)+0.2  AlR(3)+0.2  AlR(4)+0.2  AlR(5)+0.2  AuT(1)+0.2  AuT(2)+0.2  AuT(3)+0.2  AuT(4)+0.2  AuT(5)+0.2  -0.1  AlT(2)+0.2  AlT(3)+0.2  AlT(4)+0.2  AlT(5)+0.2   2000     15000    30];
+ub = [6.5                0.9           4              0.5         16          15              3             AuR(1)+0.2              AuR(2)+0.2  AuR(3)+0.2  AuR(4)+0.2  AuR(5)+0.2  -0.1  AlR(2)+0.2  AlR(3)+0.2  AlR(4)+0.2  AlR(5)+0.2  AuT(1)+0.2  AuT(2)+0.2  AuT(3)+0.2  AuT(4)+0.2  AuT(5)+0.2  -0.1  AlT(2)+0.2  AlT(3)+0.2  AlT(4)+0.2  AlT(5)+0.2   2000     15000    35];
 ub_n = ub./x_0normalizing;   
 %Lower bounds
 %lb = [Rootchord_0  Taper_mid_0   Mid_twist_0  Taper_tip_0  Tip_span_0  kinkAngle_0  Tip_twist_0 AuR(1)   n AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
-lb = [4.8                 0.5           0.05           0.3          11          0.1             0.05          0.1   AuR(2)-0.2      AuR(3)-0.2  AuR(4)-0.2  AuR(5)-0.2  AlR(1)-0.2  AlR(2)-0.2  AlR(3)-0.2  AlR(4)-0.2  AlR(5)-0.2  0.1  AuT(2)-0.2  AuT(3)-0.2  AuT(4)-0.2  AuT(5)-0.2  AlT(1)-0.2  AlT(2)-0.2  AlT(3)-0.2  AlT(4)-0.2  AlT(5)-0.2   500     2500    9];
+lb = [4.8                 0.5           0.05           0.3          11          0.1             0.05          0.1   AuR(2)-0.2      AuR(3)-0.2  AuR(4)-0.2  AuR(5)-0.2  AlR(1)-0.2  AlR(2)-0.2  AlR(3)-0.2  AlR(4)-0.2  AlR(5)-0.2  0.1  AuT(2)-0.2  AuT(3)-0.2  AuT(4)-0.2  AuT(5)-0.2  AlT(1)-0.2  AlT(2)-0.2  AlT(3)-0.2  AlT(4)-0.2  AlT(5)-0.2   500     1500    9];
 lb_n = lb./x_0normalizing;
 %%
 bounddiff = ub_n-lb_n;
@@ -81,7 +81,7 @@ write_data = true;
 %disciplines every iteration
 global fid_data
 fid_data = fopen('dataObtained.dat','wt');
-fprintf(fid_data, '%15s' ,'L/D' ,'L_mean', 'M_mean','W_wing', 'W_TO','c_maxf','cc_fuel','cc_LD','cc_Wwing');
+fprintf(fid_data, '%15s' ,'L/D' ,'W_wing',  'W_fuel','W_TO','c_maxf','cc_fuel','cc_LD','cc_W_wing');
 fprintf(fid_data, '\n');
 %file to write the vector to every iteration without the airfoil
 %coefficients

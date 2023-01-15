@@ -6,7 +6,6 @@ global W_nowing
 %incidence angle toevoegen , mzf wordt fuel weight
 
 MTOW        =    x(28)+W_nowing+x(29);         %[kg]
-MTOW = 43320;
 MZF         =    MTOW- x(29);         %[kg]
 nz_max      =    2.5;   
 span_tip    =    x(5);            %[m]
@@ -30,7 +29,7 @@ z3 = tan(3/180*pi)*(y3);
 
 spar_front  =    0.175;
 spar_rear   =    0.575;
-ftank_start =    0.1;
+ftank_start =    0.0;
 ftank_end   =    0.85;
 E_al        =    7.0E10;       %N/m2
 rho_al      =    2800;         %kg/m3
@@ -38,6 +37,38 @@ Ft_al       =    2.95E8;        %N/m2
 Fc_al       =    2.95E8;        %N/m2
 pitch_rib   =    0.5;          %[m]
 eff_factor  =    0.96;             %Depend on the stringer type
+
+
+fidR = fopen( 'f100_root.dat','wt');
+fidT = fopen( 'f100_tip.dat','wt');
+ [x(8)    x(9)    x(10)    x(11)    x(12)        x(13)   x(14)   x(15)   x(16)    x(17);
+x(18)   x(19)   x(20)    x(21)    x(22)        x(23)   x(24)   x(25)   x(26)    x(27)];
+
+AuR = x(8:12);
+AlR = x(13:17);
+AuT = x(18:22);
+AlT = x(18:27);
+%%
+[XRu,XRl,C] = D_airfoil2(AuR,AlR,linspace(0,1,100)');
+[XTu,XTl,C] = D_airfoil2(AuT,AlT,linspace(0,1,100)');
+for i = 1:100
+    fprintf(fidR, '%g %g\n',XRu(i,:));
+end
+for i = 1:100
+    fprintf(fidR, '%g %g\n',XRl(i,:));
+end
+for i = 1:100
+    fprintf(fidT, '%g %g\n',XTu(i,:));
+end
+for i = 1:100
+    fprintf(fidT, '%g %g\n',XTl(i,:));
+end
+fclose(fidR);
+fclose(fidT);
+%%
+
+
+
 Airfoil_root     =   'f100_root'; 
 Airfoil_tip     =    'f100_tip'; 
 section_num =    3;
@@ -70,7 +101,10 @@ fprintf(fid,'0 \n');
 fclose(fid);
 
 EMWET Fokker100
+
 %%
+
+
 
 fileID = fopen('Fokker100.weight','r');
 formatSpec = '%s';

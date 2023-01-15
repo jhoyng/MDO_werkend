@@ -114,13 +114,6 @@ fclose(fid);
 
 
 
-%write wing weight on the data file
-global write_data
 
-
-if write_data == true
-    global fid_data
-    fprintf(fid_data, '%15g%15g',mean(loadVector(:,2)),mean(loadVector(:,3)));
-end
 
 end
