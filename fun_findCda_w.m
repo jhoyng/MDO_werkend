@@ -1,5 +1,5 @@
 function [CD_nowing, D_nowing] = fun_findCda_w(x)
-CruiseLD = 16;
+CruiseLD = 15;
 global W_nowing
 %from design vector
 Chord_root = x(1);
