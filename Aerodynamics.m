@@ -25,12 +25,12 @@ Chord_root = Chord_root;
 Incidence_root = Incidence_root;
 x_mid = (Chord_root+tan(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
 y_mid = Span_mid;
-z_mid = Span_mid*Dihedral;
+z_mid = Span_mid*tan(Dihedral);
 Chord_mid = Taper_mid*Chord_root;
 Incidence_mid = Incidence_mid;
-x_tip = x_mid + Span_tip*tan(Sweep_LE_tip);
-y_tip = Span_tip + Span_mid;
-z_tip = Dihedral*y_tip;
+x_tip = x_mid + (Span_tip-Span_mid)*tan(Sweep_LE_tip);
+y_tip = Span_tip;
+z_tip = tan(Dihedral)*y_tip;
 Chord_tip = Chord_mid*Taper_tip;
 Incidence_tip = Incidence_tip;
 
@@ -69,8 +69,8 @@ viscosity = 1.444e-5;
 T_cruise = 218.808;
 %AoA = params.AoA;
 a = sqrt(1.4*287*T_cruise);
-Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*Span_tip;                        
-meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*Span_tip-(0.5*((Chord_mid-Chord_tip)/Span_tip)*Span_tip^2)));                        %Mean aerodynamic chord?
+Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*(Span_tip-Span_mid);                        
+meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*(Span_tip-Span_mid)-(0.5*((Chord_mid-Chord_tip)/(Span_tip-Span_mid))*(Span_tip-Span_mid)^2)));                        %Mean aerodynamic chord?
 Re = rho* meanChord*V_Cruise/viscosity;
 L_des = sqrt(W_mtow*(W_mtow-W_fuel));
 

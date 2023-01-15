@@ -36,12 +36,12 @@ Chord_root = Chord_root;
 Incidence_root = Incidence_root;
 x_mid = (Chord_root+tan(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
 y_mid = Span_mid;
-z_mid = Span_mid*Dihedral;
+z_mid = Span_mid*tan(Dihedral);
 Chord_mid = Taper_mid*Chord_root;
 Incidence_mid = Incidence_mid;
-x_tip = x_mid + Span_tip*tan(Sweep_LE_tip);
-y_tip = Span_tip + Span_mid;
-z_tip = Dihedral*y_tip;
+x_tip = x_mid + (Span_tip-Span_mid)*tan(Sweep_LE_tip);
+y_tip = Span_tip;
+z_tip = tan(Dihedral)*y_tip;
 Chord_tip = Chord_mid*Taper_tip;
 Incidence_tip = Incidence_tip;
 %---------------------------------------------
@@ -73,7 +73,7 @@ cc13 = x(27) + 0.013 - x(22); %0.13
 %SweepTETIP = atan(((x_mid+Chord_mid)-(x_root+Chord_root))/(y_mid-y_root));
 %Margin of 3 deg added to constraint and added a weight of 20 to the
 %constraint
-cc14 = ((4.60*pi/180) + (3*pi/180)- (atan(((x_tip+Chord_tip)-(x_mid+Chord_mid))/(y_tip-y_mid))))*20;
+cc14 = ((4.60*pi/180) + (3*pi/180) - (atan(((x_tip+Chord_tip)-(x_mid+Chord_mid))/(y_tip-y_mid))))*20;
 
 c1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - W_fuelMax);  %Contraint that the required fuel is less than the maximum capacity
 c2 = Wingarea/MTOW - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft

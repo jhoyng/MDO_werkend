@@ -25,12 +25,12 @@ Chord_root = Chord_root;
 Incidence_root = Incidence_root;
 x_mid = (Chord_root+tan(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
 y_mid = Span_mid;
-z_mid = Span_mid*Dihedral;
+z_mid = Span_mid*tan(Dihedral);
 Chord_mid = Taper_mid*Chord_root;
 Incidence_mid = Incidence_mid;
-x_tip = x_mid + Span_tip*tan(Sweep_LE_tip);
-y_tip = Span_tip + Span_mid;
-z_tip = Dihedral*y_tip;
+x_tip = x_mid + (Span_tip-Span_mid)*tan(Sweep_LE_tip);
+y_tip = Span_tip;
+z_tip = tan(Dihedral)*y_tip;
 Chord_tip = Chord_mid*Taper_tip;
 Incidence_tip = Incidence_tip;
 
@@ -71,8 +71,8 @@ V_mo = 0.77*a;                          %Machnr*a
 V_Cruise = V_mo;                        %In loads, we use maximum operative speed for the structural calculations
 Cruiseweight = W_mtow;                   %Functie voor design point uit assignment gebruiken
 n_loadfactor = 2.5;
-Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*Span_tip;                        
-meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*Span_tip-(0.5*((Chord_mid-Chord_tip)/Span_tip)*Span_tip^2)));                        %Mean aerodynamic chord?
+Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*(Span_tip-Span_mid);                        
+meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*(Span_tip-Span_mid)-(0.5*((Chord_mid-Chord_tip)/(Span_tip-Span_mid))*(Span_tip-Span_mid)^2)));                        %Mean aerodynamic chord?
 Re = rho* meanChord*V_Cruise/viscosity;
 
 % Flight Condition
@@ -92,7 +92,7 @@ Res = Q3D_solver(AC);
 
 
 q = 0.5*rho*(V_Cruise^2);%dynamic pressure
-loadVector = [Res.Wing.Yst/(Span_tip+Span_mid)  Res.Wing.ccl.*q  Res.Wing.cm_c4.*meanChord.*Res.Wing.chord.*q];
+loadVector = [Res.Wing.Yst/(Span_tip)  Res.Wing.ccl.*q  Res.Wing.cm_c4.*meanChord.*Res.Wing.chord.*q];
 fid = fopen( 'Fokker100.load','wt');
 for i = 1:14
     fprintf(fid, '%g %g %g \n' ,loadVector(i,1),loadVector(i,2),loadVector(i,2));
