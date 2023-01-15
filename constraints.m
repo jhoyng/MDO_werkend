@@ -3,14 +3,14 @@ global x_0normalizing
 x = x.*x_0normalizing;
 %Global parameters
 global couplings;
+global W_nowing;
 LD = couplings.LD;
 Wingarea = couplings.Wingarea;
 W_fuelMax = couplings.W_fuelMax;
-MTOW = couplings.MTOW;
+W_fuel = couplings.W_fuel;
 W_a_w = 3.110115025000000e+04;  %Nader in te vullen
 W_wing = couplings.W_wing;
-W_endOverStart = couplings.W_endOverStart;
-Wingloading_ref = 3.923293889839573e+03;
+Wingloading_ref = 43320/93.50; %kg/m2
 
 %--------------------------------------
 %from design vector
@@ -22,8 +22,6 @@ Taper_tip = x(4);
 Span_tip = x(5);
 Sweep_LE_tip = x(6)*(pi/180);
 Incidence_tip = x(7);
-W_mtow = x(28)*9.81;
-W_fuel = x(29)*9.81;
 
 %Fixed values from reference planform
 TE_sweep_mid = 4.6*(pi/180);            
@@ -49,10 +47,12 @@ Incidence_tip = Incidence_tip;
 %W_fuel_0 = x(30);
 %LD = x(31);
 %W_mtow_0 = x(29);
+MTOW = W_nowing+W_fuel+W_wing;
 
-cc1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - x(29));        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
-cc2 = (LD - x(30));         %Constraint that LD of x0 equals output of aerodynamics
-cc3 = (MTOW - x(28));       %Constraint that MTOW of x0 equals that of the objective function
+
+cc1 = W_fuel - x(29);        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
+cc2 = LD - x(30);         %Constraint that LD of x0 equals output of aerodynamics
+cc3 = W_wing - x(28);       %Constraint that MWING of x0 equals that of the objective function
 
 %Constraints that keep Upper CST coefs higher than lower CST coefs
 %root Margin 
@@ -75,11 +75,12 @@ c13 = x(27) + 0.013 - x(22); %0.13
 %constraint
 c14 = ((4.60*pi/180) + (3*pi/180) - (atan(((x_tip+Chord_tip)-(x_mid+Chord_mid))/(y_tip-y_mid))))*20; %Sweet TE tip smaller than Sweep TE mid to prevent weird kink
 
-c1 = ((W_a_w + W_wing)/((1/(1-0.938*W_endOverStart))-1) - W_fuelMax);  %Contraint that the required fuel is less than the maximum capacity
-c2 = Wingarea/MTOW - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft
+
+c1 = W_fuel - W_fuelMax;  %Contraint that the required fuel is less than the maximum capacity
+c2 = MTOW/Wingarea - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft
 
 
-c = [c1/x_0normalizing(29), c2/Wingloading_ref, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14];
+c = [c1/x_0normalizing(29), c2/Wingloading_ref, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14/20];
 ceq = [cc1/x_0normalizing(29),cc2/x_0normalizing(30),cc3/x_0normalizing(28)];
 
 %write the weight fraction on the data file
@@ -88,7 +89,7 @@ global write_data
 
 if write_data == true
     global fid_data
-    fprintf(fid_data, '%15g', c1 ,cc1,cc2,cc3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14);
+    fprintf(fid_data, '%15g', c1 ,ceq, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14);
     fprintf(fid_data, '\n');
 end
 

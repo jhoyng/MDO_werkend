@@ -1,15 +1,18 @@
+close all;
+clear all;
 %Initial values of design vector
 Rootchord_0 = 5.78 ;
 Taper_mid_0 = 0.699;
 Taper_tip_0 = 0.356;
 Root_twist_0 = 4;
 Mid_twist_0 = 2.62;
-Tip_twist_0 = -0.44;    
+Tip_twist_0 = 0.1; %-0.44;    
 Tip_span_0 = 14.038 ;
 LE_sweep_tip_0 = 19.37 ;
-W_mtow_0 =  43090-5696.73;       %[kg]
-W_fuel_0 = 13365*0.81715-5696.73;       %[m^3]*[kg/m^3] = [kg]
-LD_0 = 16+8.1744;
+W_mtow_0 =  43090-520;       %[kg]
+W_wing_0  = 1067.7;
+W_fuel_0 = 12950*0.81715; %13365*0.81715-5696.73;       %[m^3]*[kg/m^3] = [kg]
+LD_0 = 9.67065; %16+8.1744;
 
 %Defign the root and tip airfoil
 %e553
@@ -20,7 +23,9 @@ AlR = [-0.169319963986527;-0.092193075229581;-0.302733614226347;-0.0927820852317
 AuT =[0.180964236453140;0.112375548755489;0.199250369688744;0.144259294381080;0.150037563263751];
 AlT = [-0.152238948766128;0.102651482055201;-0.333682672036304;0.114339150685438;-0.156366477902652];
 
-x0 = [Rootchord_0  Taper_mid_0    Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0    AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
+%removed Root_twist_0
+%x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
+x0 = [Rootchord_0  Taper_mid_0    Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0    AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
 
 %[W_strWing,W_fmax, wingsurf] = structures(x0);
 

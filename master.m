@@ -5,15 +5,19 @@ close all;
 Rootchord_0 = 5.78 ;
 Taper_mid_0 = 0.699;
 Taper_tip_0 = 0.356;
-Root_twist_0 = 0.1; %4;
-Mid_twist_0 = 0.1; %2.62;
+Root_twist_0 = 4;
+Mid_twist_0 = 2.62;
 Tip_twist_0 = 0.1; %-0.44;    
 Tip_span_0 = 14.038 ;
-LE_sweep_tip_0 = 19.37 ;
-W_mtow_0 =  43090-520;       %[kg]
-W_fuel_0 = 12950*0.81715; %13365*0.81715-5696.73;       %[m^3]*[kg/m^3] = [kg]
+% LE_sweep_tip_0 = 19.37 ;
+kinkAngle_0 = 0.5;
+% W_mtow_0 =  43090-520;       %[kg]
+W_wing_0  = 1067.7;
+W_fuel_0 = 12950*0.81715-241; %13365*0.81715-5696.73;       %[m^3]*[kg/m^3] = [kg]
 LD_0 = 9.67065; %16+8.1744;
 
+global W_nowing
+W_nowing = 3.0919e+04;
 %Defign the root and tip airfoil
 %e553
 %Defign the root and tip airfoil
@@ -25,11 +29,7 @@ AlT = [-0.152238948766128;0.102651482055201;-0.333682672036304;0.114339150685438
 
 %removed Root_twist_0
 %x0 = [Rootchord_0  Taper_mid_0  Root_twist_0 Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-x0 = [Rootchord_0  Taper_mid_0    Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0    AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-x0(10:12) = x0(10:12)/2;
-x0(15:17) = x0(15:17)/2;
-x0(20:22) = x0(20:22)/2;
-x0(25:27) = x0(25:27)/2;
+x0 = [Rootchord_0  Taper_mid_0    Mid_twist_0  Taper_tip_0  Tip_span_0  kinkAngle_0  Tip_twist_0    AuR(1)  AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
 
 %x0 = [6.5     0.688382      2.70705     0.200003           16      16.9628     -0.43562          0.1     0.067593     0.112645     0.108532    0.0584835         -0.1    0.0675909     0.111645     0.108479    0.0584867          0.1     0.146733    0.0191988     0.108537    -0.220665         -0.1     0.146757    0.0181988     0.108527    -0.221665      36797.5      4477.69      29.7583];
 
@@ -52,18 +52,18 @@ coeff_mean = 0.01;
 
 
 global x_0normalizing
-x_0normalizing = abs([x0(1:7)  coeff_mean*ones(1,20)  x0(28:30)]);
+x_0normalizing = abs([x0(1:2) 0.2  x0(4:5) 0.3 0.2  coeff_mean*ones(1,20)  x0(28:30)]);
 
 global ub
 global lb
 %Creating bounds for the design variables
 %Upper bounds
-%ub = [Rootchord_0  Taper_mid_0  Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0   AuR(1)    AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-ub = [6.5                1          4             0.5         16          40              3           0.4       0.5      0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5    0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5   50000     15000    30];
+%ub = [Rootchord_0  Taper_mid_0  Mid_twist_0  Taper_tip_0  Tip_span_0  kinkAngle_0 Tip_twist_0   AuR(1)    AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
+ub = [6.5                1          4             0.5         16          20             3           0.4       0.5      0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5    0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5   2000     15000    30];
 ub_n = ub./x_0normalizing;
 %Lower bounds
-%lb = [Rootchord_0  Taper_mid_0   Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)   n AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-lb = [4.8                 0.5           -0.5           0.2          6          10              -1          0.1      -0.5   -0.5   -0.5     -0.5    -0.4    -0.5    -0.5    -0.5    -0.5   0.1      -0.5  -0.5   -0.5     -0.5    -0.4     -0.5    -0.5    -0.5    -0.5   1000     5000    6];
+%lb = [Rootchord_0  Taper_mid_0   Mid_twist_0  Taper_tip_0  Tip_span_0  kinkAngle_0  Tip_twist_0 AuR(1)   n AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
+lb = [4.8                 0.5           -0.5           0.2          6          0.1             -1          0.1      -0.5   -0.5   -0.5     -0.5    -0.4    -0.5    -0.5    -0.5    -0.5   0.1      -0.5  -0.5   -0.5     -0.5    -0.4     -0.5    -0.5    -0.5    -0.5   500     5000    6];
 lb_n = lb./x_0normalizing;
 %%
 bounddiff = ub_n-lb_n;
@@ -82,19 +82,17 @@ write_data = true;
 %disciplines every iteration
 global fid_data
 fid_data = fopen('dataObtained.dat','wt');
-fprintf(fid_data, '%15s%15s%15s%15s%15s%15s%15s%15s%15s%15s\n' ,'L/D' ,'L_mean', 'M_mean', 'C_mean','W_wing', 'W_frac','c1','cc1','cc2','cc3');
-
+fprintf(fid_data, '%15s' ,'L/D' ,'L_mean', 'M_mean','W_wing', 'W_TO','c_maxf','cc_fuel','cc_LD','cc_Wwing');
+fprintf(fid_data, '\n');
 %file to write the vector to every iteration without the airfoil
 %coefficients
 global fid_vector
 fid_vector = fopen('dataVector.dat','wt');
-fprintf(fid_vector, '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
-
+fprintf(fid_vector, '%13s' ,'chord_R',  'taper_M' ,'twist_M', 'taper_tip', 'span' , 'kinkAngle',   'twist_T', 'W_wing', 'W_fuel','L/D');
+fprintf(fid_vector, '\n');
 %file to write the vector to every iteration
 global fid_fullVector
 fid_fullVector = fopen('dataFullVector.dat','wt');
-fprintf(fid_fullVector, '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M','twist_M', 'taper_tip','Root Upper','', '',  '',   '',  'Root Lower',   '',   '',   '',   '',   'Tip Upper',  '',   '',   '',   '',   'Tip Lower',   '',  '',   '',   '',  'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel');
-
 %write file to store bounds and current iteration
 
 

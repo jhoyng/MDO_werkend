@@ -9,7 +9,7 @@ span_tip    =    x(5);            %[m]
 root_chord  =    x(1);           %[m]
 taper1       =    x(2);
 taper2       =    x(4);   
-sweep2_LE   = x(6);
+kinkAngle   = x(6);
 Incidence_root = 4; %x(3);
 Incidence_mid = x(3);
 Incidence_tip = x(7);
@@ -22,7 +22,8 @@ y3 = span_tip;
 
 x1 = 0;
 x2 = root_chord + tan(sweep1_TE/180*pi) * y2 - root_chord*taper1;
-x3 = x2+ tan(sweep2_LE/180*pi) * (span_tip-y2);
+x3 = x2 + root_chord*taper1+ tan((sweep1_TE+kinkAngle)/180*pi)*(y3-y2)- root_chord*taper1*taper2;
+
 
 z1 = 0;
 z2 = tan(3/180*pi)*y2;
@@ -70,7 +71,7 @@ span_tip    =    x0(5);            %[m]
 root_chord  =    x0(1);           %[m]
 taper1       =    x0(2);
 taper2       =    x0(4);   
-sweep2_LE   = x0(6);
+kinkAngle   = x0(6);
 Incidence_root = 4; %x0(3);
 Incidence_mid = x0(3);
 Incidence_tip = x0(7);
@@ -83,7 +84,7 @@ y3 = span_tip;
 
 x1 = 0;
 x2 = root_chord + tan(sweep1_TE/180*pi) * y2 - root_chord*taper1;
-x3 = x2+ tan(sweep2_LE/180*pi) * (span_tip-y2);
+x3 = x2 + root_chord*taper1+ tan((sweep1_TE+kinkAngle)/180*pi)*(y3-y2)- root_chord*taper1*taper2;
 
 z1 = 0;
 z2 = tan(3/180*pi)*y2;

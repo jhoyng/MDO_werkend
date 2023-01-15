@@ -2,17 +2,17 @@ function [W_strWing,W_fmax] = structures(x)
 % global x_0normalizing
 % x = x.*x_0normalizing;
 
-
+global W_nowing
 %incidence angle toevoegen , mzf wordt fuel weight
 
-MTOW        =    x(28);         %[kg]
+MTOW        =    x(28)+W_nowing+x(29);         %[kg]
 MZF         =    x(28)- x(29);         %[kg]
 nz_max      =    2.5;   
 span_tip    =    x(5);            %[m]
 root_chord  =    x(1);           %[m]
 taper1       =    x(2);
-taper2       =    x(4);   
-sweep2_LE = x(6);
+taper2       =    x(4);  
+kinkAngle = x(6);
 
 sweep1_TE   =   4.60;   %set in stone
 y1 = 0;
@@ -21,7 +21,7 @@ y3 = span_tip;
 
 x1 = 0;
 x2 = root_chord + tan(sweep1_TE/180*pi) * y2 - root_chord*taper1;
-x3 = x2+ tan(sweep2_LE/180*pi) * (span_tip-y2);
+x3 = x2 + root_chord*taper1+ tan((sweep1_TE+kinkAngle)/180*pi)*(y3-y2)- root_chord*taper1*taper2;
 
 z1 = 0;
 z2 = tan(3/180*pi)*y2;

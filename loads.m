@@ -1,4 +1,6 @@
 function [loadVector] = loads(x)
+
+global W_nowing
 %from design vector
 Chord_root = x(1);
 Taper_mid = x(2) ;
@@ -6,9 +8,9 @@ Incidence_root = 4; %x(3);
 Incidence_mid = x(3);
 Taper_tip = x(4);
 Span_tip = x(5);
-Sweep_LE_tip = x(6)*(pi/180);
+kinkAngle = x(6)*(pi/180);
 Incidence_tip = x(7);
-W_mtow = x(28)*9.81;
+W_mtow = (x(28)+W_nowing+x(29))*9.81;
 W_fuel = x(29)*9.81;
 
 %Fixed values from reference planform
@@ -28,9 +30,11 @@ y_mid = Span_mid;
 z_mid = Span_mid*tan(Dihedral);
 Chord_mid = Taper_mid*Chord_root;
 Incidence_mid = Incidence_mid;
-x_tip = x_mid + (Span_tip-Span_mid)*tan(Sweep_LE_tip);
+
 y_tip = Span_tip;
 z_tip = tan(Dihedral)*y_tip;
+x_tip=  x_mid+ Chord_mid+ tan(TE_sweep_mid+kinkAngle)*(y_tip-y_mid)-Chord_mid*Taper_tip;
+
 Chord_tip = Chord_mid*Taper_tip;
 Incidence_tip = Incidence_tip;
 
@@ -116,7 +120,7 @@ global write_data
 
 if write_data == true
     global fid_data
-    fprintf(fid_data, '%15g%15g%15g',mean(loadVector(:,1)),mean(loadVector(:,2)),mean(loadVector(:,3)));
+    fprintf(fid_data, '%15g%15g',mean(loadVector(:,2)),mean(loadVector(:,3)));
 end
 
 end

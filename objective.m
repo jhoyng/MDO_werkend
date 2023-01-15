@@ -1,7 +1,7 @@
 function [MTOW] = objective(x)
 global x_0normalizing
 x = x.*x_0normalizing;
-W_nowing = 3.0919e+04;
+global W_nowing
 
 %make a file to write all wanted data to 
 global write_data;
@@ -19,7 +19,8 @@ if write_data == true
     global lb
     fid_bounds = fopen('dataBounds.dat','wt');
     %fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M', 'twist_R' ,'twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
-    fprintf(fid_bounds,  '%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s%13s\n' ,'chord_R',  'taper_M','twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'MTOW', 'W_fuel','L/D');
+    fprintf(fid_bounds,  '%13s' ,'chord_R',  'taper_M','twist_M', 'taper_tip', 'span' , 'sweep_tip',   'twist_T', 'W_wing', 'W_fuel','L/D');
+    fprintf(fid_bounds,  '\n'); 
     %fprintf(fid_bounds, '%13g' , [ub(1:8) ub(29:31)]);
     fprintf(fid_bounds, '%13g' , [ub(1:7) ub(28:30)]);
     fprintf(fid_bounds, '\n');
@@ -44,18 +45,26 @@ end
 [LD, Wingarea] = Aerodynamics(x);
 loads(x);
 [W_wing,W_fuelMax] = structures(x);
-W_endOverStart = performance(x);  %LD is directly fed into performance
+W_fuel = performance(x);  %LD is directly fed into performance
 
 %objective function
-MTOW = (W_nowing+W_wing)/(0.938*W_endOverStart);
+MTOW = W_fuel+W_nowing+ W_wing;     
+
+%write the weight fraction on the data file
+global write_data
+
+
+if write_data == true
+    global fid_data
+    fprintf(fid_data, '%15g', MTOW);
+end
 
 global couplings;
 couplings.LD = LD;
 couplings.Wingarea = Wingarea;
 couplings.W_fuelMax = W_fuelMax;  %Voor de inequality constraint dat fuel volume groot genoeg is.
-couplings.MTOW = MTOW;
+couplings.W_fuel = W_fuel;
 couplings.W_wing = W_wing;
-couplings.W_endOverStart = W_endOverStart;
 
 
 
