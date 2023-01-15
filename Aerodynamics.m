@@ -69,8 +69,16 @@ viscosity = 1.444e-5;
 T_cruise = 218.808;
 %AoA = params.AoA;
 a = sqrt(1.4*287*T_cruise);
-Wingarea = ((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*(Span_tip-Span_mid);                        
-meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*(Span_tip-Span_mid)-(0.5*((Chord_mid-Chord_tip)/(Span_tip-Span_mid))*(Span_tip-Span_mid)^2)));                        %Mean aerodynamic chord?
+Wingarea = 2*((Chord_root+Chord_mid)/2)*Span_mid+((Chord_mid+Chord_tip)/2)*(Span_tip-Span_mid);                        
+%meanChord = (2/Wingarea)*((Chord_root*Span_mid-(0.5*((Chord_root-Chord_mid)/Span_mid)*Span_mid^2))+(Chord_mid*(Span_tip-Span_mid)-(0.5*((Chord_mid-Chord_tip)/(Span_tip-Span_mid))*(Span_tip-Span_mid)^2)));                        %Mean aerodynamic chord?
+
+
+fun1 = @(integry) ((Chord_root-(Chord_root-Chord_mid)/Span_mid*integry).^2);
+fun2 = @(integry2) ((Chord_mid-(Chord_mid-Chord_tip)/(Span_tip-Span_mid)*integry2).^2);
+MAC1 = integral(fun1,0,Span_mid);
+MAC2 = integral(fun2,Span_mid,(Span_tip-Span_mid));
+meanChord = (2/(Wingarea))*(MAC1+MAC2);
+
 Re = rho* meanChord*V_Cruise/viscosity;
 L_des = sqrt(W_mtow*(W_mtow-W_fuel));
 
