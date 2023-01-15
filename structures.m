@@ -6,12 +6,13 @@ global W_nowing
 %incidence angle toevoegen , mzf wordt fuel weight
 
 MTOW        =    x(28)+W_nowing+x(29);         %[kg]
-MZF         =    x(28)- x(29);         %[kg]
+MTOW = 43320;
+MZF         =    MTOW- x(29);         %[kg]
 nz_max      =    2.5;   
 span_tip    =    x(5);            %[m]
 root_chord  =    x(1);           %[m]
 taper1       =    x(2);
-taper2       =    x(4);  
+taper2       =    x(4);   
 kinkAngle = x(6);
 
 sweep1_TE   =   4.60;   %set in stone

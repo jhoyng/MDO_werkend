@@ -11,13 +11,12 @@ Tip_twist_0 = 0.1; %-0.44;
 Tip_span_0 = 14.038 ;
 % LE_sweep_tip_0 = 19.37 ;
 kinkAngle_0 = 0.5;
-% W_mtow_0 =  43090-520;       %[kg]
-W_wing_0  = 1067.7;
+W_wing_0  =  1068.93;
 W_fuel_0 = 12950*0.81715-241; %13365*0.81715-5696.73;       %[m^3]*[kg/m^3] = [kg]
-LD_0 = 9.67065; %16+8.1744;
+LD_0 = 15; %16+8.1744;
 
 global W_nowing
-W_nowing = 3.0919e+04;
+W_nowing =  3.1910e+04;
 %Defign the root and tip airfoil
 %e553
 %Defign the root and tip airfoil
@@ -59,11 +58,11 @@ global lb
 %Creating bounds for the design variables
 %Upper bounds
 %ub = [Rootchord_0  Taper_mid_0  Mid_twist_0  Taper_tip_0  Tip_span_0  kinkAngle_0 Tip_twist_0   AuR(1)    AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
-ub = [6.5                1          4             0.5         16          20             3           0.4       0.5      0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5    0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5   2000     15000    30];
-ub_n = ub./x_0normalizing;
+ub = [6.5                0.9           4              0.5         16          15              3             AuR(1)+0.2              AuR(2)+0.2  AuR(3)+0.2  AuR(4)+0.2  AuR(5)+0.2  -0.1  AlR(2)+0.2  AlR(3)+0.2  AlR(4)+0.2  AlR(5)+0.2  AuT(1)+0.2  AuT(2)+0.2  AuT(3)+0.2  AuT(4)+0.2  AuT(5)+0.2  -0.1  AlT(2)+0.2  AlT(3)+0.2  AlT(4)+0.2  AlT(5)+0.2   2000     15000    30];
+ub_n = ub./x_0normalizing;   
 %Lower bounds
 %lb = [Rootchord_0  Taper_mid_0   Mid_twist_0  Taper_tip_0  Tip_span_0  kinkAngle_0  Tip_twist_0 AuR(1)   n AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_wing_0 W_fuel_0 LD_0];
-lb = [4.8                 0.5           -0.5           0.2          6          0.1             -1          0.1      -0.5   -0.5   -0.5     -0.5    -0.4    -0.5    -0.5    -0.5    -0.5   0.1      -0.5  -0.5   -0.5     -0.5    -0.4     -0.5    -0.5    -0.5    -0.5   500     5000    6];
+lb = [4.8                 0.5           0.05           0.3          11          0.1             0.05          0.1   AuR(2)-0.2      AuR(3)-0.2  AuR(4)-0.2  AuR(5)-0.2  AlR(1)-0.2  AlR(2)-0.2  AlR(3)-0.2  AlR(4)-0.2  AlR(5)-0.2  0.1  AuT(2)-0.2  AuT(3)-0.2  AuT(4)-0.2  AuT(5)-0.2  AlT(1)-0.2  AlT(2)-0.2  AlT(3)-0.2  AlT(4)-0.2  AlT(5)-0.2   500     2500    9];
 lb_n = lb./x_0normalizing;
 %%
 bounddiff = ub_n-lb_n;
@@ -113,9 +112,9 @@ options.DiffMinChange   = 1e-2;         % Minimum change while gradient searchin
 options.DiffMaxChange   = 1e-1;         % Maximum change while gradient searching
 options.TolCon          = 1e-3;         % Maximum difference between two subsequent constraint vectors [c and ceq]
 options.TolFun          = 1e-3;         % Maximum difference between two subsequent objective value
-options.TolX            = 1e-10;         % Maximum difference between two subsequent design vectors
+options.TolX            = 1e-6;         % Maximum difference between two subsequent design vectors
 %options.FinDiffType = 'central';
-options.MaxIter         = 30;           % Maximum iterations
+options.MaxIter         = 20;           % Maximum iterations
 %options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
 
 tic

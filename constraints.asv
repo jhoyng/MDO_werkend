@@ -1,77 +1,97 @@
-function [v_f] = constraints(x)
+function [c, ceq] = constraints(x)
+global x_0normalizing
+x = x.*x_0normalizing;
+%Global parameters
+global couplings;
+global W_nowing;
+LD = couplings.LD;
+Wingarea = couplings.Wingarea;
+W_fuelMax = couplings.W_fuelMax;
+W_fuel = couplings.W_fuel;
+W_a_w = 3.110115025000000e+04;  %Nader in te vullen
+W_wing = couplings.W_wing;
+Wingloading_ref = 43320/93.50; %kg/m2
+
+%--------------------------------------
+%from design vector
+Chord_root = x(1);
+Taper_mid = x(2) ;
+Incidence_root = 4; %x(3);
+Incidence_mid = x(3);
+Taper_tip = x(4);
+Span_tip = x(5);
+Sweep_LE_tip = x(6)*(pi/180);
+Incidence_tip = x(7);
+
+%Fixed values from reference planform
+TE_sweep_mid = 4.6*(pi/180);            
+Span_mid = 4.64;                
+Dihedral = 3*(pi/180);  
+x_root = 0;
+y_root = 0;
+z_root = 0;
+Chord_root = Chord_root;
+Incidence_root = Incidence_root;
+x_mid = (Chord_root+tan(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
+y_mid = Span_mid;
+z_mid = Span_mid*tan(Dihedral);
+Chord_mid = Taper_mid*Chord_root;
+Incidence_mid = Incidence_mid;
+x_tip = x_mid + (Span_tip-Span_mid)*tan(Sweep_LE_tip);
+y_tip = Span_tip;
+z_tip = tan(Dihedral)*y_tip;
+Chord_tip = Chord_mid*Taper_tip;
+Incidence_tip = Incidence_tip;
+%---------------------------------------------
+
+%W_fuel_0 = x(30);
+%LD = x(31);
+%W_mtow_0 = x(29);
+MTOW = W_nowing+W_fuel+W_wing;
 
 
-global loc_kink
-coeffs = x.coeffs;
-span = x.span;
-chord1 = x.chord1;
-chord2 = x.chord2;
-chord3 = x.chord3;
+cc1 = W_fuel - x(29);        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
+cc2 = LD - x(30);         %Constraint that LD of x0 equals output of aerodynamics
+cc3 = W_wing - x(28);       %Constraint that MWING of x0 equals that of the objective function
 
-coeffsNr = 5;
+%Constraints that keep Upper CST coefs higher than lower CST coefs
+%root Margin 
+c4 = x(13) + 0.13 - x(8); %0.13
+c5 = x(14) + 0.13 - x(9); %0.13
+c6 = x(15) + 0.13 - x(10); %0.13
+c7 = x(16) + 0.13 - x(11); %0.13
+c8 = x(17) + 0.013 - x(12); %0.013
+%tip
+c9 = x(23) + 0.13 - x(18); %0.13
+c10 = x(24) + 0.13 - x(19); %0.13
+c11 = x(25) + 0.13 - x(20); %0.13
+c12 = x(26) + 0.13 - x(21); %0.13
+c13 = x(27) + 0.013 - x(22); %0.13
 
-AuR = coeffs(1,1:coeffsNr);
-AlR = coeffs(1,coeffsNr+1:coeffsNr*2);
-AuT = coeffs(2,1:coeffsNr);
-AlT = coeffs(2,coeffsNr+1:coeffsNr*2);
-
-AuM = (AuR*(1-loc_kink)+AuR*loc_kink);
-AlM = (AlR*(1-loc_kink)+AlR*loc_kink);
-
-
-
-%From all airfoils, 21 points are taken which means 20 
-xpoints = linspace(0,1,21)';
-
-[Xtu1,Xtl1,C1] = D_airfoil2(AuR,AlR,xpoints);
-[Xtu2,Xtl2,C2] = D_airfoil2(AuM,AlM,xpoints);
-[Xtu3,Xtl3,C3] = D_airfoil2(AuT,AlT,xpoints);
-disp([Xtu1,Xtu3]);
-
-%3 empty variables to start integrating over the 
-area_dimless1 = 0;
-area_dimless2 = 0;
-area_dimless3 = 0;
+%Constraint that makes sure the sweep of the tip section is at least equal
+%to that of the mid section
+%SweepTETIP = atan(((x_mid+Chord_mid)-(x_root+Chord_root))/(y_mid-y_root));
+%Margin of 3 deg added to constraint and added a weight of 20 to the
+%constraint
+c14 = ((4.60*pi/180) + (3*pi/180) - (atan(((x_tip+Chord_tip)-(x_mid+Chord_mid))/(y_tip-y_mid))))*20; %Sweet TE tip smaller than Sweep TE mid to prevent weird kink
 
 
-for i = (5:12)
-    area_dimless1 = area_dimless1+ (Xtu1(i,2)-Xtl1(i,2))/20;
+c1 = W_fuel - W_fuelMax;  %Contraint that the required fuel is less than the maximum capacity
+c2 = MTOW/Wingarea - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft
+
+
+c = [c1/x_0normalizing(29), c2/Wingloading_ref, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14/20];
+ceq = [cc1/x_0normalizing(29),cc2/x_0normalizing(30),cc3/x_0normalizing(28)];
+
+%write the weight fraction on the data file
+global write_data
+
+
+if write_data == true
+    global fid_data
+    fprintf(fid_data, '%15g', c1 ,cc1,cc2,cc3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14);
+    fprintf(fid_data, '\n');
 end
 
-for i = (5:12)
-    area_dimless2 = area_dimless2+ (Xtu2(i,2)-Xtl2(i,2))/20;
-end
-
-for i = (5:12)
-    area_dimless3 = area_dimless3+ (Xtu3(i,2)-Xtl3(i,2))/20;
-end
-
-A1 = area_dimless1*chord1^2;
-A2 = area_dimless1*chord2^2;
-
-A3 = area_dimless1*chord3^2;
-
-v_f1 = loc_kink * span * (A1+A2)/2;
-
-frac2_3 = 1-loc_kink;
-frac2_85 = 0.85 - loc_kink;
-A85 = (1-frac2_85/frac2_3)*A2+frac2_85/frac2_3*A3;
-v_f2 = frac2_85*span*(A2+A85)/2;
-v_f = (v_f2+v_f1)*0.93;
-v_ftotalLitres = v_f*1000*0.93;
-
-
-hold on
-plot(Xtu1(:,1),Xtu1(:,2),'b');    %plot upper surface coords
-plot(Xtl1(:,1),Xtl1(:,2),'b');    %plot lower surface coords
-plot(Xtu2(:,1),Xtu2(:,2),'r');    %plot upper surface coords
-plot(Xtl2(:,1),Xtl2(:,2),'r');    %plot lower surface coords
-plot(Xtu3(:,1),Xtu3(:,2),'g');    %plot upper surface coords
-plot(Xtl3(:,1),Xtl3(:,2),'g');    %plot lower surface coords
-%plot(xpoints,lower_Out,'r');
-%plot(xpoints,upper_Out,'r');
-axis([0,1,-.5,.5]);
-axis([0,1,-0.5,0.5]);
-hold on;
 
 end
