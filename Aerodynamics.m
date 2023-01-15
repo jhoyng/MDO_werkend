@@ -2,7 +2,7 @@ function [Aero_LD, Wingarea] = Aerodynamics(x)
 %from design vector
 Chord_root = x(1);
 Taper_mid = x(2) ;
-Incidence_root = 4; %x(3);
+Incidence_root = 0; %4; %x(3);
 Incidence_mid = x(3);
 Taper_tip = x(4);
 Span_tip = x(5);

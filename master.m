@@ -5,9 +5,9 @@ close all;
 Rootchord_0 = 5.78 ;
 Taper_mid_0 = 0.699;
 Taper_tip_0 = 0.356;
-Root_twist_0 = 4;
-Mid_twist_0 = 2.62;
-Tip_twist_0 = -0.44;    
+Root_twist_0 = 0.1; %4;
+Mid_twist_0 = 0.1; %2.62;
+Tip_twist_0 = 0.1; %-0.44;    
 Tip_span_0 = 14.038 ;
 LE_sweep_tip_0 = 19.37 ;
 W_mtow_0 =  43090-520;       %[kg]
@@ -59,11 +59,11 @@ global lb
 %Creating bounds for the design variables
 %Upper bounds
 %ub = [Rootchord_0  Taper_mid_0  Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0   AuR(1)    AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-ub = [6.5                1          6             0.5         16          25              4           0.4       0.5      0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5    0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5   50000     15000    30];
+ub = [6.5                1          4             0.5         16          40              3           0.4       0.5      0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5    0.4       0.5    0.5    0.5      0.5     -0.1     0.5     0.5     0.5     0.5   50000     15000    30];
 ub_n = ub./x_0normalizing;
 %Lower bounds
 %lb = [Rootchord_0  Taper_mid_0   Mid_twist_0  Taper_tip_0  Tip_span_0  LE_sweep_tip_0  Tip_twist_0 AuR(1)   n AuR(2)  AuR(3)  AuR(4)  AuR(5)  AlR(1)  AlR(2)  AlR(3)  AlR(4)  AlR(5)  AuT(1)  AuT(2)  AuT(3)  AuT(4)  AuT(5)  AlT(1)  AlT(2)  AlT(3)  AlT(4)  AlT(5) W_mtow_0 W_fuel_0 LD_0];
-lb = [3                 0.5           -6           0.2          6          10              -4          0.1      -0.5   -0.5   -0.5     -0.5    -0.4    -0.5    -0.5    -0.5    -0.5   0.1      -0.5  -0.5   -0.5     -0.5    -0.4     -0.5    -0.5    -0.5    -0.5   1000     500    6];
+lb = [4.8                 0.5           -0.5           0.2          6          10              -1          0.1      -0.5   -0.5   -0.5     -0.5    -0.4    -0.5    -0.5    -0.5    -0.5   0.1      -0.5  -0.5   -0.5     -0.5    -0.4     -0.5    -0.5    -0.5    -0.5   1000     5000    6];
 lb_n = lb./x_0normalizing;
 %%
 bounddiff = ub_n-lb_n;
@@ -119,7 +119,10 @@ options.TolX            = 1e-10;         % Maximum difference between two subseq
 %options.FinDiffType = 'central';
 options.MaxIter         = 30;           % Maximum iterations
 %options = optimset('Display','iter','Algorithm','sqp',Tolfun = 0.000001);
+
+tic
 [x_upper,fval,exitflag,output] = fmincon(@objective,x0_n,[],[],[],[],lb_n,ub_n,@constraints,options);
+toc
 
 
 %close data file

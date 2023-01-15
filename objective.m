@@ -1,7 +1,7 @@
 function [MTOW] = objective(x)
 global x_0normalizing
 x = x.*x_0normalizing;
-W_nowing = 3.110115025000000e+04;
+W_nowing = 3.0919e+04;
 
 %make a file to write all wanted data to 
 global write_data;
