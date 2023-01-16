@@ -85,9 +85,9 @@ c1 = W_fuel - W_fuelMax;  %Contraint that the required fuel is less than the max
 c2 = MTOW/Wingarea - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft
 
 
-fixfuel = 2;
-fixLD = 6;
-fixWwing = 3;
+fixfuel = 1;
+fixLD = 8;
+fixWwing = 1.5;
 
 
 c = [c1/x_0normalizing(29), c2/(Wingloading_ref), c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14/20];
