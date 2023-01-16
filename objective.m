@@ -1,4 +1,4 @@
-function [MTOW] = objective(x)
+function [MTOWnorm] = objective(x)
 global x_0normalizing
 x = x.*x_0normalizing;
 global W_nowing
@@ -49,7 +49,7 @@ W_fuel = performance(x);  %LD is directly fed into performance
 
 %objective function
 MTOW = W_fuel+W_nowing+ W_wing;     
-
+MTOWnorm = MTOW/43090;
 %write the weight fraction on the data file
 global write_data
 

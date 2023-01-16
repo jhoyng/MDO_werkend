@@ -11,7 +11,6 @@ Span_tip = x(5);
 kinkAngle = x(6)*(pi/180);
 Incidence_tip = x(7);
 W_mtow = (x(28)+W_nowing+x(29))*9.81;
-W_fuel = x(29)*9.81;
 
 %Fixed values from reference planform
 TE_sweep_mid = 4.6*(pi/180);            
@@ -23,20 +22,16 @@ Dihedral = 3*(pi/180);
 x_root = 0;
 y_root = 0;
 z_root = 0;
-Chord_root = Chord_root;
-Incidence_root = Incidence_root;
 x_mid = (Chord_root+tan(TE_sweep_mid)*Span_mid-(Taper_mid*Chord_root));
 y_mid = Span_mid;
 z_mid = Span_mid*tan(Dihedral);
 Chord_mid = Taper_mid*Chord_root;
-Incidence_mid = Incidence_mid;
 
 y_tip = Span_tip;
 z_tip = tan(Dihedral)*y_tip;
 x_tip=  x_mid+ Chord_mid+ tan(TE_sweep_mid+kinkAngle)*(y_tip-y_mid)-Chord_mid*Taper_tip;
 
 Chord_tip = Chord_mid*Taper_tip;
-Incidence_tip = Incidence_tip;
 
 
 % Wing planform geometry 

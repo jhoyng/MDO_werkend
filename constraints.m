@@ -50,9 +50,14 @@ Incidence_tip = Incidence_tip;
 MTOW = W_nowing+W_fuel+W_wing;
 
 
-cc1 = 1- x(29)/ W_fuel;        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
-cc2 = 1- x(30)/LD;         %Constraint that LD of x0 equals output of aerodynamics
-cc3 = 1- x(28)/W_wing;       %Constraint that MWING of x0 equals that of the objective function
+% cc1 = 1- x(29)/ W_fuel;        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
+% cc2 = (1- x(30)/LD)^2;         %Constraint that LD of x0 equals output of aerodynamics
+% cc3 = 1- x(28)/W_wing;       %Constraint that MWING of x0 equals that of the objective function
+
+
+cc1 = (x(29)-W_fuel)/x_0normalizing(29);        %Constraint that fuel weight of X0 equals output of performance %Hier zelfde som voor W_f gebruiken als bij constraint c1?
+cc2 = (x(30)-LD)/x_0normalizing(30);         %Constraint that LD of x0 equals output of aerodynamics
+cc3 = (x(28)-W_wing)/x_0normalizing(28);       %Constraint that MWING of x0 equals that of the objective function
 
 %Constraints that keep Upper CST coefs higher than lower CST coefs
 %root Margin 
@@ -79,11 +84,14 @@ c14 = ((4.60*pi/180) + (3*pi/180) - (atan(((x_tip+Chord_tip)-(x_mid+Chord_mid))/
 c1 = W_fuel - W_fuelMax;  %Contraint that the required fuel is less than the maximum capacity
 c2 = MTOW/Wingarea - Wingloading_ref ; %Constraint forcing the wing loading not to be higher than the wing loading of the reference aircraft
 
+
+fixfuel = 2;
 fixLD = 6;
-fixWwing = 2;
+fixWwing = 3;
+
 
 c = [c1/x_0normalizing(29), c2/(Wingloading_ref), c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14/20];
-ceq = [cc1,cc2*fixLD,cc3*fixWwing];
+ceq = [cc1*fixfuel,cc2*fixLD,cc3*fixWwing];
 
 %write the weight fraction on the data file
 global write_data
